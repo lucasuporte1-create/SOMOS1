@@ -84,6 +84,7 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .slot.got{border-style:solid;border-color:rgba(200,233,0,0.4);background:rgba(200,233,0,0.06);}
 .slot.got:active{transform:scale(0.93);}
 .slot-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:rgba(200,233,0,0.13);}
+.qty-badge{position:absolute;top:5px;right:5px;background:#C8E900;color:#111;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.5px;padding:1px 5px;border-radius:6px;line-height:1.4;}
 .slot-icon{font-size:26px;}
 .slot-name{font-size:8px;font-weight:600;letter-spacing:0.5px;color:rgba(200,233,0,0.75);text-align:center;padding:0 4px;margin-top:4px;text-transform:uppercase;}
 .rbadge{position:absolute;top:4px;right:4px;font-size:7px;font-weight:700;padding:2px 5px;border-radius:4px;letter-spacing:0.5px;}
@@ -93,7 +94,20 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 
 /* PERFIL */
 .profile-card{background:rgba(0,0,0,0.5);border:1px solid rgba(200,233,0,0.2);border-radius:20px;padding:18px;backdrop-filter:blur(12px);margin-bottom:14px;}
-.pav-big{width:60px;height:60px;border-radius:50%;background:rgba(200,233,0,0.15);border:2px solid rgba(200,233,0,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#C8E900;margin:0 auto 10px;}
+.pav-big{width:86px;height:86px;border-radius:50%;background:rgba(200,233,0,0.15);border:2px solid rgba(200,233,0,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#C8E900;margin:0 auto 10px;cursor:pointer;overflow:hidden;position:relative;transition:border-color 0.2s;}
+.pav-big:active{opacity:0.8;}
+.pav-big img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;}
+.pav-edit-hint{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);font-size:9px;font-family:'Poppins',sans-serif;font-weight:600;letter-spacing:0.5px;color:#C8E900;text-align:center;padding:3px 0;border-radius:0 0 50px 50px;}
+.photo-modal{position:absolute;inset:0;background:rgba(0,0,0,0.85);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;}
+.photo-modal.show{display:flex;}
+.photo-modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#C8E900;}
+.photo-modal-preview{width:120px;height:120px;border-radius:50%;background:rgba(200,233,0,0.1);border:2px solid rgba(200,233,0,0.4);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.photo-modal-preview img{width:100%;height:100%;object-fit:cover;}
+.photo-btn{width:100%;padding:14px;border-radius:14px;border:none;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;transition:opacity 0.15s;}
+.photo-btn.primary{background:#C8E900;color:#111;}
+.photo-btn.secondary{background:rgba(200,233,0,0.12);color:#C8E900;border:1px solid rgba(200,233,0,0.3);}
+.photo-btn.danger{background:rgba(255,80,80,0.15);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);}
+.photo-btn:active{opacity:0.75;}
 .p-uname{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#C8E900;text-align:center;margin-bottom:2px;}
 .pstats{display:flex;gap:10px;margin:12px 0 0;}
 .ps{flex:1;background:rgba(200,233,0,0.07);border:1px solid rgba(200,233,0,0.15);border-radius:12px;padding:10px 6px;text-align:center;}
@@ -152,7 +166,7 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
     <div class="album-bg-overlay"></div>
     <div class="album-header">
       <div class="album-header-logo">SOMOS 1</div>
-      <div class="album-avatar" id="av-init" onclick="goTab('perfil')">?</div>
+      <div class="album-avatar" id="av-init" onclick="goTab('perfil')" style="overflow:hidden;position:relative;"></div>
     </div>
     <div class="tabs">
       <div class="tab on" onclick="goTab('stands')">Stands</div>
@@ -191,7 +205,10 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
       <!-- PERFIL PANEL -->
       <div class="panel" id="panel-perfil">
         <div class="profile-card">
-          <div class="pav-big" id="pav">?</div>
+          <div class="pav-big" id="pav" onclick="abrirFotoModal()">
+            <span id="pav-init-txt">?</span>
+            <div class="pav-edit-hint">FOTO</div>
+          </div>
           <div class="p-uname" id="p-uname">—</div>
           <div class="pstats">
             <div class="ps"><div class="ps-num" id="ps-stands">0</div><div class="ps-label">Stands</div></div>
@@ -241,6 +258,21 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
       </div>
 
     </div>
+  </div>
+
+  <!-- PHOTO MODAL -->
+  <div class="photo-modal" id="photo-modal">
+    <div class="photo-modal-title">FOTO DE PERFIL</div>
+    <div class="photo-modal-preview" id="photo-preview"><span id="photo-prev-init">?</span></div>
+    <div style="font-size:11px;color:rgba(200,233,0,0.45);text-align:center;line-height:1.5;">
+      Sua foto fica salva no dispositivo.<br>Futuramente será sincronizada na nuvem.
+    </div>
+    <button class="photo-btn primary" onclick="document.getElementById('file-input').click()">📷 ESCOLHER FOTO</button>
+    <button class="photo-btn secondary" onclick="usarCamera()">🤳 TIRAR FOTO</button>
+    <button class="photo-btn danger" id="btn-remover-foto" onclick="removerFoto()" style="display:none">🗑️ REMOVER FOTO</button>
+    <button class="photo-btn secondary" onclick="fecharFotoModal()">CANCELAR</button>
+    <input type="file" id="file-input" accept="image/*" style="display:none" onchange="processarFoto(event)"/>
+    <input type="file" id="camera-input" accept="image/*" capture="user" style="display:none" onchange="processarFoto(event)"/>
   </div>
 
   <!-- PACK OVERLAY -->
@@ -294,7 +326,7 @@ CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODE
 const gs=()=>{
   const u=gl();
   if(!u)return{stands:[],stickers:[]};
-  return JSON.parse(localStorage.getItem('s1_state_'+u)||'{"stands":[],"stickers":[]}');
+  return JSON.parse(localStorage.getItem('s1_state_'+u)||'{"stands":[],"stickers":{}}');
 };
 const ss=s=>{
   const u=gl();if(!u)return;
@@ -353,15 +385,21 @@ function entrar(){
 document.addEventListener('keydown',e=>{if(e.key==='Enter')entrar();});
 
 function entrarAlbum(userKey,label){
-  const init=(label||userKey||'?')[0].toUpperCase();
-  document.getElementById('av-init').textContent=init;
-  document.getElementById('pav').textContent=init;
-  document.getElementById('p-uname').textContent=(label||userKey||'').toUpperCase();
   const pd=JSON.parse(localStorage.getItem('s1_profile_'+userKey)||'{}');
+  // Usa nome salvo no perfil se existir, senão usa o label do código
+  const nomeExibir=pd.nome||label||userKey||'?';
+  const init=nomeExibir[0].toUpperCase();
+  setAvatarTexto(init);
+  document.getElementById('p-uname').textContent=nomeExibir.toUpperCase();
+  // Preenche os campos do formulário de perfil
   if(pd.nome)document.getElementById('p-nome').value=pd.nome;
   if(pd.idade)document.getElementById('p-idade').value=pd.idade;
   if(pd.igreja)document.getElementById('p-igreja').value=pd.igreja;
   if(pd.ministerio)document.getElementById('p-min').value=pd.ministerio;
+  // Carrega foto salva
+  const fotoKey='s1_photo_'+userKey;
+  const fotoSalva=localStorage.getItem(fotoKey);
+  if(fotoSalva) aplicarFoto(fotoSalva);
   const isMaster=(userKey==='SM-3000');
   const adminTab=document.getElementById('tab-admin');
   if(adminTab) adminTab.style.display=isMaster?'flex':'none';
@@ -402,7 +440,10 @@ function resgatarCodigo(){
   if(st.stands.includes(num)){msg.className='code-msg erro';msg.textContent='Você já visitou este stand!';return;}
   const novas=sortear(st,3);
   st.stands.push(num);
-  novas.forEach(s=>{if(!st.stickers.includes(s.id))st.stickers.push(s.id);});
+  novas.forEach(s=>{
+    if(!st.stickers[s.id]) st.stickers[s.id]=0;
+    st.stickers[s.id]++;
+  });
   ss(st);
   document.getElementById('code-input').value='';
   msg.className='code-msg ok';msg.textContent='✓ Stand '+num+' resgatado!';
@@ -439,14 +480,22 @@ function fecharPacote(){document.getElementById('pack-overlay').classList.remove
 
 function renderStickers(){
   const st=gs();
+  // migração: se stickers ainda for array antigo, converte
+  if(Array.isArray(st.stickers)){
+    const obj={};
+    st.stickers.forEach(id=>{obj[id]=1;});
+    st.stickers=obj; ss(st);
+  }
   const g=document.getElementById('stickers-grid');g.innerHTML='';
   POOL.forEach(s=>{
-    const has=st.stickers.includes(s.id);
+    const qty=st.stickers[s.id]||0;
+    const has=qty>0;
     const d=document.createElement('div');
     d.className='slot'+(has?' got':'');
     if(has){
       const rl=s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
-      d.innerHTML='<span class="rbadge r'+s.r+'">'+rl+'</span><div class="slot-icon">'+s.icon+'</div><div class="slot-name">'+s.nome+'</div>';
+      const badge=qty>1?'<span class="qty-badge">'+qty+'x</span>':'';
+      d.innerHTML=badge+'<span class="rbadge r'+s.r+'">'+rl+'</span><div class="slot-icon">'+s.icon+'</div><div class="slot-name">'+s.nome+'</div>';
     } else {
       d.innerHTML='<div class="slot-num">'+s.id+'</div>';
     }
@@ -456,9 +505,10 @@ function renderStickers(){
 
 function updateStats(){
   const st=gs();
+  const totalFigs=Array.isArray(st.stickers)?st.stickers.length:Object.keys(st.stickers).length;
   document.getElementById('ps-stands').textContent=st.stands.length;
-  document.getElementById('ps-stickers').textContent=st.stickers.length;
-  document.getElementById('ps-pct').textContent=Math.round(st.stickers.length/TOTAL_STICKERS*100)+'%';
+  document.getElementById('ps-stickers').textContent=totalFigs;
+  document.getElementById('ps-pct').textContent=Math.round(totalFigs/TOTAL_STICKERS*100)+'%';
 }
 
 function getCodigosAtivos(){
@@ -501,6 +551,102 @@ function filtrarAdmin(){
   renderAdmin(v||null);
 }
 
+/* ── AVATAR helpers ── */
+function setAvatarTexto(letra){
+  // Barra superior
+  const av=document.getElementById('av-init');
+  av.innerHTML=letra;
+  // Avatar grande no perfil
+  const pav=document.getElementById('pav');
+  const initTxt=document.getElementById('pav-init-txt');
+  if(initTxt) initTxt.textContent=letra;
+}
+
+function aplicarFoto(base64){
+  // Barra superior
+  const av=document.getElementById('av-init');
+  av.innerHTML='<img src="'+base64+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+  // Avatar grande
+  const pav=document.getElementById('pav');
+  const initTxt=document.getElementById('pav-init-txt');
+  if(initTxt) initTxt.style.display='none';
+  let img=pav.querySelector('img.pav-foto');
+  if(!img){img=document.createElement('img');img.className='pav-foto';img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;';pav.appendChild(img);}
+  img.src=base64;
+  // Preview no modal
+  const prev=document.getElementById('photo-preview');
+  prev.innerHTML='<img src="'+base64+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+  const btnRem=document.getElementById('btn-remover-foto');
+  if(btnRem) btnRem.style.display='';
+}
+
+/* ── FOTO MODAL ── */
+function abrirFotoModal(){
+  const userKey=gl();
+  const init=(document.getElementById('p-uname').textContent||'?')[0];
+  document.getElementById('photo-prev-init').textContent=init;
+  const fotoSalva=localStorage.getItem('s1_photo_'+(userKey||''));
+  if(fotoSalva){
+    document.getElementById('photo-preview').innerHTML='<img src="'+fotoSalva+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+    document.getElementById('btn-remover-foto').style.display='';
+  } else {
+    document.getElementById('photo-preview').innerHTML='<span id="photo-prev-init">'+init+'</span>';
+    document.getElementById('btn-remover-foto').style.display='none';
+  }
+  document.getElementById('photo-modal').classList.add('show');
+}
+
+function fecharFotoModal(){
+  document.getElementById('photo-modal').classList.remove('show');
+}
+
+function usarCamera(){
+  document.getElementById('camera-input').click();
+}
+
+function processarFoto(event){
+  const file=event.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const base64=e.target.result;
+    // Redimensiona para max 400px para não pesar demais
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const max=400;
+      let w=img.width,h=img.height;
+      if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}
+      else{if(h>max){w=Math.round(w*max/h);h=max;}}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const compressed=canvas.toDataURL('image/jpeg',0.75);
+      const userKey=gl();
+      if(userKey) localStorage.setItem('s1_photo_'+userKey, compressed);
+      aplicarFoto(compressed);
+      fecharFotoModal();
+    };
+    img.src=base64;
+  };
+  reader.readAsDataURL(file);
+  event.target.value='';
+}
+
+function removerFoto(){
+  const userKey=gl();
+  if(userKey) localStorage.removeItem('s1_photo_'+userKey);
+  // Restaura inicial de texto
+  const init=(document.getElementById('p-uname').textContent||'?')[0];
+  const av=document.getElementById('av-init');
+  av.innerHTML=init;
+  const pav=document.getElementById('pav');
+  const foto=pav.querySelector('img.pav-foto');
+  if(foto) foto.remove();
+  const initTxt=document.getElementById('pav-init-txt');
+  if(initTxt){initTxt.style.display='';initTxt.textContent=init;}
+  fecharFotoModal();
+}
+
 function salvarPerfil(){
   const userKey=gl();if(!userKey)return;
   const pd={nome:document.getElementById('p-nome').value,idade:document.getElementById('p-idade').value,igreja:document.getElementById('p-igreja').value,ministerio:document.getElementById('p-min').value};
@@ -508,8 +654,7 @@ function salvarPerfil(){
   const msg=document.getElementById('save-msg');msg.textContent='✓ Perfil salvo!';
   setTimeout(()=>{msg.textContent='';},2500);
   if(pd.nome){
-    document.getElementById('pav').textContent=pd.nome[0].toUpperCase();
-    document.getElementById('av-init').textContent=pd.nome[0].toUpperCase();
+    setAvatarTexto(pd.nome[0].toUpperCase());
     document.getElementById('p-uname').textContent=pd.nome.toUpperCase();
   }
 }
