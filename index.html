@@ -583,13 +583,13 @@ function initSupabase(){
 const gl = () => _userCode || localStorage.getItem('s1_logado') || null;
 
 /* ── Helpers de fallback localStorage ── */
-const gs_local = () => JSON.parse(localStorage.getItem('s1_state_'+(gl()||'')||'{"stands":[],"stickers":{}}'));
+const gs_local = () => { const raw = localStorage.getItem('s1_state_'+(gl()||'')); return raw ? JSON.parse(raw) : {stands:[],stickers:{}}; };
 const ss_local = s  => localStorage.setItem('s1_state_'+(gl()||''), JSON.stringify(s));
 
 /* ── Lê estado do Supabase (com fallback local) ── */
 async function gs(){
   const sb = initSupabase();
-  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')) return gs_local();
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){ _cache = gs_local(); return _cache; }
   const u = gl(); if(!u) return {stands:[],stickers:{}};
   try {
     const [{ data: sv }, { data: st }] = await Promise.all([
@@ -1052,6 +1052,7 @@ async function entrar(){
   if(!isMaster && !ACTIVATION_CODES[raw]){ msg.className='msg erro'; msg.textContent='Código inválido. Ex: SM-0001'; return; }
 
   _userCode = raw;
+  _cache = { stands:[], stickers:{} }; // reset cache ao trocar de usuário
   localStorage.setItem('s1_logado', raw);
 
   // Cria usuário no Supabase se não existir
