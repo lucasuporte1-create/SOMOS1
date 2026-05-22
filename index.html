@@ -14,15 +14,15 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .screen.active{opacity:1;pointer-events:all;}
 
 /* SPLASH */
-#s-splash{justify-content:center;align-items:center;background:#000;z-index:10;}
-#s-splash.exit{opacity:0;transform:scale(1.1);}
-.splash-logo{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:-2px;color:#C8E900;animation:splashPop 0.7s ease forwards;display:flex;align-items:center;gap:4px;}
-.splash-o{width:60px;height:60px;background:#C8E900;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.splash-o span{font-size:30px;color:#000;font-family:'Bebas Neue',sans-serif;}
-.splash-sub{font-size:11px;letter-spacing:4px;color:rgba(200,233,0,0.5);margin-top:8px;text-transform:uppercase;text-align:center;animation:fadeUp 0.5s 0.35s ease both;}
-.splash-ring{width:100px;height:100px;border:3px solid rgba(200,233,0,0.2);border-top-color:#C8E900;border-radius:50%;margin:28px auto 0;animation:spin 1s linear infinite;}
+#s-splash{justify-content:center;align-items:flex-end;padding-bottom:52px;z-index:10;overflow:hidden;}
+#s-splash.exit{opacity:0;transform:scale(1.08);}
+.splash-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;}
+.splash-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0;}
+.splash-tagline{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:6px;color:rgba(200,233,0,0.85);text-align:center;animation:fadeUp 0.6s 0.4s ease both;text-transform:uppercase;margin-bottom:22px;}
+.splash-tagline span{color:#C8E900;}
+.splash-ring{width:44px;height:44px;border:3px solid rgba(200,233,0,0.2);border-top-color:#C8E900;border-radius:50%;animation:spin 0.9s linear infinite;}
 @keyframes splashPop{from{opacity:0;transform:scale(0.6);}80%{transform:scale(1.06);}to{opacity:1;transform:scale(1);}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* LOGIN */
@@ -124,6 +124,70 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .btn-save:active{opacity:0.82;transform:scale(0.97);}
 .save-msg{font-size:11px;text-align:center;margin-top:10px;color:#C8E900;min-height:14px;}
 
+/* ── STICKER ACTION MODAL (Ver / Trocar) ── */
+.saction-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.82);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:32px;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.saction-overlay.show{opacity:1;pointer-events:all;}
+.saction-sheet{background:rgba(15,15,15,0.98);border:1px solid rgba(200,233,0,0.25);border-radius:24px 24px 0 0;width:100%;padding:24px 24px 12px;animation:slideUp 0.3s ease both;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.saction-handle{width:40px;height:4px;background:rgba(200,233,0,0.25);border-radius:99px;margin:0 auto 18px;}
+.saction-card{display:flex;align-items:center;gap:14px;background:rgba(200,233,0,0.05);border:1px solid rgba(200,233,0,0.18);border-radius:16px;padding:14px;margin-bottom:18px;}
+.saction-icon{font-size:36px;}
+.saction-info{flex:1;}
+.saction-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#C8E900;}
+.saction-rarity{font-size:10px;font-weight:600;letter-spacing:1px;margin-top:2px;}
+.saction-qty{font-family:'Bebas Neue',sans-serif;font-size:14px;color:rgba(200,233,0,0.5);margin-top:4px;}
+.saction-btns{display:flex;gap:10px;margin-bottom:10px;}
+.saction-btn{flex:1;padding:15px;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;transition:opacity 0.15s,transform 0.1s;}
+.saction-btn:active{opacity:0.78;transform:scale(0.96);}
+.saction-btn.primary{background:#C8E900;color:#111;}
+.saction-btn.secondary{background:rgba(200,233,0,0.12);color:#C8E900;border:1px solid rgba(200,233,0,0.3);}
+.saction-btn.cancel{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);width:100%;margin-top:2px;}
+.saction-info-line{font-size:10px;color:rgba(200,233,0,0.4);text-align:center;margin-top:8px;letter-spacing:0.5px;}
+
+/* ── STICKER DETAIL MODAL ── */
+.sdetail-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.88);z-index:210;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.sdetail-overlay.show{opacity:1;pointer-events:all;}
+.sdetail-box{background:rgba(15,15,15,0.98);border:1px solid rgba(200,233,0,0.28);border-radius:24px;padding:28px;width:100%;text-align:center;animation:popIn 0.3s ease both;}
+@keyframes popIn{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
+.sdetail-icon{font-size:56px;margin-bottom:10px;}
+.sdetail-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#C8E900;margin-bottom:6px;}
+.sdetail-rarity{font-size:12px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:8px;display:inline-block;margin-bottom:16px;}
+.sdetail-qty-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;}
+.sdetail-qty-label{font-size:11px;color:rgba(200,233,0,0.45);letter-spacing:1px;}
+.sdetail-qty-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#C8E900;}
+.sdetail-dup{font-size:10px;color:rgba(200,233,0,0.4);margin-bottom:18px;}
+.sdetail-close{width:100%;padding:13px;border:1px solid rgba(200,233,0,0.25);background:rgba(200,233,0,0.08);color:#C8E900;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;}
+
+/* ── TRADE / QR OVERLAY ── */
+.trade-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.96);z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.trade-overlay.show{opacity:1;pointer-events:all;}
+.trade-step{display:none;flex-direction:column;align-items:center;width:100%;gap:14px;}
+.trade-step.on{display:flex;}
+.trade-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#C8E900;text-align:center;}
+.trade-sub{font-size:11px;color:rgba(200,233,0,0.45);text-align:center;letter-spacing:1px;line-height:1.6;}
+.trade-sticker-preview{background:rgba(200,233,0,0.07);border:1px solid rgba(200,233,0,0.3);border-radius:18px;padding:18px 22px;display:flex;align-items:center;gap:14px;width:100%;}
+.tsp-icon{font-size:38px;}
+.tsp-info{flex:1;}
+.tsp-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#C8E900;}
+.tsp-rarity{font-size:10px;font-weight:600;letter-spacing:1px;margin-top:2px;}
+.qr-wrapper{background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;justify-content:center;}
+.qr-wrapper canvas,.qr-wrapper img{border-radius:8px;}
+.trade-code-badge{background:rgba(200,233,0,0.12);border:2px dashed rgba(200,233,0,0.6);border-radius:14px;padding:14px 24px;text-align:center;}
+.trade-code-label{font-size:10px;letter-spacing:2px;color:rgba(200,233,0,0.5);text-transform:uppercase;margin-bottom:4px;}
+.trade-code-value{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:8px;color:#C8E900;}
+.trade-timer{font-size:11px;color:rgba(255,150,50,0.7);margin-top:4px;}
+.trade-confirm-input{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(200,233,0,0.35);border-radius:14px;padding:16px;font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:6px;color:#C8E900;outline:none;text-transform:uppercase;text-align:center;-webkit-appearance:none;}
+.trade-confirm-input:focus{border-color:#C8E900;background:rgba(200,233,0,0.06);}
+.trade-confirm-input::placeholder{color:rgba(200,233,0,0.2);font-size:14px;letter-spacing:2px;}
+.trade-btn{width:100%;padding:15px;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:opacity 0.15s,transform 0.1s;}
+.trade-btn:active{opacity:0.78;transform:scale(0.97);}
+.trade-btn.primary{background:#C8E900;color:#111;}
+.trade-btn.ghost{background:rgba(200,233,0,0.08);color:#C8E900;border:1px solid rgba(200,233,0,0.25);}
+.trade-msg{font-size:12px;text-align:center;min-height:16px;}
+.trade-msg.ok{color:#C8E900;}.trade-msg.erro{color:#ff6b6b;}
+.trade-success-icon{font-size:64px;animation:bounceIn 0.5s ease both;}
+@keyframes bounceIn{0%{transform:scale(0);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+
 /* PACK OVERLAY */
 .pack-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.88);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .pack-overlay.show{opacity:1;pointer-events:all;}
@@ -136,131 +200,8 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .pack-card-name{font-size:9px;font-weight:600;color:rgba(200,233,0,0.85);text-align:center;margin-top:7px;text-transform:uppercase;letter-spacing:0.5px;}
 .pack-card-rarity{font-size:8px;margin-top:4px;padding:2px 6px;border-radius:4px;font-weight:700;}
 .pack-close{margin-top:24px;padding:12px 38px;background:#C8E900;color:#111;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;animation:fadeUp 0.4s 0.5s ease both;}
-
-/* --- INTERFACE DE OPCOES E VISUALIZACAO --- */
-.modal-opcoes {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-  z-index: 150; display: none; align-items: flex-end; justify-content: center;
-}
-.opcoes-content {
-  width: 100%; background: #141414; border-top: 1px solid #C8E900;
-  border-top-left-radius: 24px; border-top-right-radius: 24px;
-  padding: 24px; box-sizing: border-box; animation: slideUp 0.3s ease-out;
-}
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.opcoes-barra {
-  width: 40px; height: 4px; background: rgba(200,233,0,0.3);
-  border-radius: 2px; margin: 0 auto 20px auto;
-}
-.opcoes-titulo {
-  font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #C8E900;
-  letter-spacing: 2px; text-align: center; margin-bottom: 20px;
-}
-.opcoes-botoes { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
-.btn-opcao {
-  width: 100%; padding: 16px; border-radius: 14px; font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px; letter-spacing: 1px; display: flex; align-items: center; justify-content: center;
-  gap: 10px; cursor: pointer; transition: all 0.2s; border: none;
-}
-.btn-opcao.btn-ver { background: #C8E900; color: #000; }
-.btn-opcao.btn-ver:active { transform: scale(0.97); }
-.btn-opcao.btn-trocar { background: #1f1f1f; color: #C8E900; border: 1px solid rgba(200,233,0,0.3); }
-.btn-opcao.btn-trocar:active { transform: scale(0.97); }
-.btn-opcao-cancelar {
-  width: 100%; background: transparent; border: none; color: #888;
-  padding: 12px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
-  cursor: pointer; text-align: center; text-transform: uppercase;
-}
-
-/* MODAL VER FIGURINHA */
-.modal-ver {
-  position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 160;
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  padding: 30px;
-}
-.modal-ver.show { display: flex; }
-.ver-card {
-  width: 220px; aspect-ratio: 3/4; background: radial-gradient(circle at top right, rgba(200,233,0,0.15), transparent), #111;
-  border: 2px solid #C8E900; border-radius: 20px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; position: relative; box-shadow: 0 10px 40px rgba(200,233,0,0.2);
-}
-.ver-icon { font-size: 70px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); margin-bottom: 10px;}
-.ver-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #C8E900; letter-spacing: 2px; }
-.ver-num { position: absolute; top: 15px; left: 15px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: rgba(200,233,0,0.5); }
-.btn-fechar-ver {
-  margin-top: 30px; padding: 12px 30px; background: transparent; border: 1px solid #C8E900;
-  color: #C8E900; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px;
-  border-radius: 12px; cursor: pointer;
-}
-
-/* --- TELA DE TROCAS (FLUXO QR) --- */
-.tela-trocas {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.98); z-index: 140; display: none;
-  flex-direction: column; padding: 0; box-sizing: border-box; overflow-y: auto;
-}
-.trocas-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 24px 24px 15px; border-bottom: 1px solid rgba(200,233,0,0.15);
-}
-.trocas-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #C8E900; letter-spacing: 2px; margin:0; }
-.btn-fechar-trocas { background: none; border: none; color: #C8E900; font-size: 28px; cursor: pointer; line-height:1; }
-.trocas-conteudo { padding: 24px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-
-/* Paineis de Troca */
-.painel-troca { width: 100%; display: none; flex-direction: column; align-items: center; text-align: center; }
-.painel-troca.ativo { display: flex; animation: fadeIn 0.3s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.troca-titulo-painel { color: #fff; font-size: 16px; margin-bottom: 24px; font-weight: 500; line-height: 1.4; }
-
-/* Botoes Grandes Ação */
-.btn-acao-qr {
-  width: 100%; padding: 20px; border-radius: 16px; background: rgba(200,233,0,0.05);
-  border: 1px solid #C8E900; color: #C8E900; font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px; letter-spacing: 2px; margin-bottom: 15px; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 10px; transition: all 0.2s;
-}
-.btn-acao-qr:active { background: rgba(200,233,0,0.2); transform: scale(0.98); }
-.btn-acao-qr span.sub { font-family: 'Poppins', sans-serif; font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0; }
-
-/* QR Code Gerado */
-.qr-box { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-.qr-box img { width: 180px; height: 180px; display: block; }
-.codigo-sessao-box { background: #111; border: 1px dashed rgba(200,233,0,0.5); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; }
-.codigo-sessao-box span { display: block; font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 4px; }
-.codigo-sessao-box strong { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #C8E900; letter-spacing: 3px; }
-
-/* Câmera Mock (Ler QR) */
-.camera-mock-container { position: relative; width: 220px; height: 220px; margin-bottom: 20px; overflow: hidden; border-radius: 16px; }
-.camera-mock-bg { width: 100%; height: 100%; background: #1a1a1a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="none"/><circle cx="20" cy="20" r="2" fill="%23333"/></svg>'); }
-.camera-overlay { position: absolute; inset: 0; border: 2px solid rgba(200,233,0,0.3); border-radius: 16px; }
-.camera-corners::before, .camera-corners::after { content: ''; position: absolute; width: 30px; height: 30px; border-color: #C8E900; border-style: solid; }
-.camera-corners::before { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 16px; }
-.camera-corners::after { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 16px; }
-.scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #C8E900; box-shadow: 0 0 10px #C8E900; animation: scan 2s linear infinite; }
-@keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
-
-/* Input Fallback */
-.fallback-box { width: 100%; background: rgba(200,233,0,0.05); border: 1px solid rgba(200,233,0,0.15); border-radius: 16px; padding: 20px; text-align: center; margin-top: 10px; }
-.fallback-box p { color: rgba(255,255,255,0.6); font-size: 11px; margin: 0 0 12px; line-height: 1.4; }
-.input-codigo-troca { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(200,233,0,0.3); border-radius: 12px; color: #C8E900; padding: 12px; text-align: center; font-size: 18px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 3px; margin-bottom: 12px; box-sizing: border-box; text-transform: uppercase; outline: none; }
-.btn-padrao { width: 100%; background: #C8E900; color: #000; border: none; padding: 14px; border-radius: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; cursor: pointer; }
-
-/* Mesa de Negociação (Grid) */
-.mesa-header { width: 100%; text-align: left; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-.mesa-header h3 { color: #C8E900; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; }
-.mesa-header p { color: #888; font-size: 11px; }
-.grid-repetidas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
-.card-repetida { background: rgba(200,233,0,0.05); border: 1px solid rgba(200,233,0,0.2); border-radius: 12px; padding: 10px; text-align: center; position: relative; }
-.card-repetida .qtd-badge { position: absolute; top: -5px; right: -5px; background: #ff3b30; color: white; font-size: 10px; font-weight: bold; padding: 3px 6px; border-radius: 10px; }
-.card-repetida .icon-fig { font-size: 24px; margin-bottom: 5px; }
-.card-repetida .num-fig { font-size: 9px; color: #C8E900; font-weight: 600; text-transform: uppercase; }
-
-.btn-voltar-fluxo { background: transparent; border: none; color: #888; font-family: 'Poppins', sans-serif; font-size: 12px; margin-top: 20px; text-decoration: underline; cursor: pointer; }
-
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="phone" id="phone">
@@ -268,9 +209,11 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 
   <!-- SPLASH -->
   <div class="screen active" id="s-splash">
-    <div class="splash-logo">SOM<div class="splash-o"><span>1</span></div>S</div>
-    <div class="splash-sub">Juventude · Verbo da Vida · Recife</div>
-    <div class="splash-ring"></div>
+    <img class="splash-bg" src="data:image/png;base64,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" alt=""/>
+    <div class="splash-content">
+      <div class="splash-tagline"><span>ATÉ SERMOS UM</span></div>
+      <div class="splash-ring"></div>
+    </div>
   </div>
 
   <!-- LOGIN -->
@@ -384,102 +327,6 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
     </div>
   </div>
 
-  
-  <!-- MENU DE OPCOES (VER / TROCAR) -->
-  <div id="modalOpcoesFigurinha" class="modal-opcoes" onclick="fecharOpcoesFigurinha(event)">
-    <div class="opcoes-content" onclick="event.stopPropagation()">
-      <div class="opcoes-barra"></div>
-      <h3 id="opcoesTituloFigurinha" class="opcoes-titulo">FIGURINHA</h3>
-      <div class="opcoes-botoes">
-        <button class="btn-opcao btn-ver" onclick="executarOpcaoVer()">👀 VER FIGURINHA</button>
-        <button id="btnOpcaoTrocar" class="btn-opcao btn-trocar" onclick="executarOpcaoTrocar()">🔄 INICIAR TROCA</button>
-      </div>
-      <button class="btn-opcao-cancelar" onclick="fecharOpcoesFigurinha(null)">Cancelar</button>
-    </div>
-  </div>
-
-  <!-- MODAL VER FIGURINHA -->
-  <div id="modalVerFigurinha" class="modal-ver">
-    <div class="ver-card">
-      <div class="ver-num" id="verNum">Nº 01</div>
-      <div class="ver-icon" id="verIcon">✨</div>
-      <div class="ver-name" id="verName">NOME</div>
-    </div>
-    <button class="btn-fechar-ver" onclick="fecharModalVer()">VOLTAR</button>
-  </div>
-
-  <!-- TELA DE TROCA DE FIGURINHAS (FLUXO QR) -->
-  <div id="telaTrocas" class="tela-trocas">
-    <div class="trocas-header">
-      <h2>SISTEMA DE TROCAS</h2>
-      <button class="btn-fechar-trocas" onclick="fecharTelaTrocas()">&times;</button>
-    </div>
-    
-    <div class="trocas-conteudo">
-      
-      <!-- PAINEL 1: ESCOLHA DA AÇÃO -->
-      <div id="painelEscolha" class="painel-troca ativo">
-        <p class="troca-titulo-painel">Como deseja conectar com seu parceiro de troca?</p>
-        
-        <button class="btn-acao-qr" onclick="irParaPainel('gerar')">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
-          GERAR QR CODE
-          <span class="sub">Sou o Usuário A (Vou mostrar meu código)</span>
-        </button>
-        
-        <button class="btn-acao-qr" onclick="irParaPainel('ler')">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h3"/><path d="M20 7V4h-3"/><path d="M4 17v3h3"/><path d="M20 17v3h-3"/><circle cx="12" cy="12" r="3"/></svg>
-          LER QR CODE
-          <span class="sub">Sou o Usuário B (Vou escanear o código)</span>
-        </button>
-      </div>
-
-      <!-- PAINEL 2: GERAR QR CODE (USUÁRIO A) -->
-      <div id="painelGerar" class="painel-troca">
-        <p class="troca-titulo-painel">Mostre este QR Code para o seu amigo escanear.</p>
-        <div class="qr-box">
-          <img id="imgQrGerado" src="" alt="QR Code">
-        </div>
-        <div class="codigo-sessao-box">
-          <span>Código da Sessão Local</span>
-          <strong id="textoCodigoSessao">S1-0000</strong>
-        </div>
-        <button class="btn-padrao" onclick="irParaPainel('mesa')">ENTRAR NA MESA DE NEGOCIAÇÃO</button>
-        <button class="btn-voltar-fluxo" onclick="irParaPainel('escolha')">Voltar</button>
-      </div>
-
-      <!-- PAINEL 3: LER QR CODE (USUÁRIO B) -->
-      <div id="painelLer" class="painel-troca">
-        <p class="troca-titulo-painel">Posicione o QR Code do seu amigo no centro da câmera.</p>
-        
-        <div class="camera-mock-container">
-          <div class="camera-mock-bg"></div>
-          <div class="camera-overlay camera-corners"></div>
-          <div class="scan-line"></div>
-        </div>
-        
-        <div class="fallback-box">
-          <p>A leitura falhou?<br>Digite o código da sessão gerado pelo seu amigo:</p>
-          <input type="text" id="inputCodigoSessao" class="input-codigo-troca" placeholder="EX: S1-XXXX" maxlength="7">
-          <button class="btn-padrao" onclick="validarConexao()">CONECTAR MANUALMENTE</button>
-        </div>
-        
-        <button class="btn-voltar-fluxo" onclick="irParaPainel('escolha')">Voltar</button>
-      </div>
-
-      <!-- PAINEL 4: MESA DE NEGOCIAÇÃO -->
-      <div id="painelMesa" class="painel-troca">
-        <div class="mesa-header">
-          <h3>MESA DE NEGOCIAÇÃO</h3>
-          <p>Conexão estabelecida! Escolha quais das suas figurinhas repetidas deseja oferecer:</p>
-        </div>
-        <div class="grid-repetidas" id="containerRepetidas"></div>
-        <button class="btn-voltar-fluxo" onclick="irParaPainel('escolha')">Encerrar Troca</button>
-      </div>
-
-    </div>
-  </div>
-
   <!-- PHOTO MODAL -->
   <div class="photo-modal" id="photo-modal">
     <div class="photo-modal-title">FOTO DE PERFIL</div>
@@ -495,6 +342,117 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
     <input type="file" id="camera-input" accept="image/*" capture="user" style="display:none" onchange="processarFoto(event)"/>
   </div>
 
+  <!-- STICKER ACTION SHEET (Ver / Trocar) -->
+  <div class="saction-overlay" id="saction-overlay">
+    <div class="saction-sheet">
+      <div class="saction-handle"></div>
+      <div class="saction-card" id="saction-card">
+        <div class="saction-icon" id="saction-icon">🌟</div>
+        <div class="saction-info">
+          <div class="saction-name" id="saction-name">Figurinha</div>
+          <div class="saction-rarity" id="saction-rarity"></div>
+          <div class="saction-qty" id="saction-qty"></div>
+        </div>
+      </div>
+      <div class="saction-btns">
+        <button class="saction-btn primary" onclick="verFigurinha()">👁 VER</button>
+        <button class="saction-btn secondary" id="btn-trocar-action" onclick="iniciarTroca()">🔄 TROCAR</button>
+      </div>
+      <button class="saction-btn cancel" onclick="fecharSAction()">CANCELAR</button>
+      <div class="saction-info-line" id="saction-info-line"></div>
+    </div>
+  </div>
+
+  <!-- STICKER DETAIL MODAL -->
+  <div class="sdetail-overlay" id="sdetail-overlay">
+    <div class="sdetail-box">
+      <div class="sdetail-icon" id="sdetail-icon">🌟</div>
+      <div class="sdetail-name" id="sdetail-name">Figurinha</div>
+      <div class="sdetail-rarity" id="sdetail-rarity-badge"></div>
+      <div class="sdetail-qty-row">
+        <div class="sdetail-qty-label">QUANTIDADE</div>
+        <div class="sdetail-qty-num" id="sdetail-qty">1</div>
+      </div>
+      <div class="sdetail-dup" id="sdetail-dup"></div>
+      <button class="sdetail-close" onclick="fecharSDetail()">FECHAR</button>
+    </div>
+  </div>
+
+  <!-- TRADE OVERLAY -->
+  <div class="trade-overlay" id="trade-overlay">
+
+    <!-- STEP 1: QR Code (Jovem A) -->
+    <div class="trade-step on" id="trade-step-1">
+      <div class="trade-title">🔄 TROCAR FIGURINHA</div>
+      <div class="trade-sub">Mostre o QR Code para o<br>Jovem B escanear com a câmera</div>
+      <div class="trade-sticker-preview" id="trade-preview">
+        <div class="tsp-icon" id="tsp-icon">🌟</div>
+        <div class="tsp-info">
+          <div class="tsp-name" id="tsp-name">—</div>
+          <div class="tsp-rarity" id="tsp-rarity"></div>
+        </div>
+      </div>
+      <div class="qr-wrapper" id="qr-wrapper">
+        <canvas id="qr-canvas" width="200" height="200"></canvas>
+      </div>
+      <div class="trade-code-badge">
+        <div class="trade-code-label">Código de Confirmação</div>
+        <div class="trade-code-value" id="trade-code-display">——</div>
+        <div class="trade-timer" id="trade-timer"></div>
+      </div>
+      <div class="trade-sub" style="color:rgba(200,233,0,0.6);">Após o Jovem B escanear, ele verá um código.<br>Aguarde ele te mostrar o código e clique em CONFIRMAR.</div>
+      <button class="trade-btn primary" onclick="irParaStep2()">CONFIRMAR TROCA →</button>
+      <button class="trade-btn ghost" onclick="fecharTrade()">CANCELAR</button>
+    </div>
+
+    <!-- STEP 2: Digitar código de confirmação (Jovem A) -->
+    <div class="trade-step" id="trade-step-2">
+      <div class="trade-title">✅ CONFIRMAR TROCA</div>
+      <div class="trade-sub">O Jovem B mostrou um código na tela dele.<br>Digite o código abaixo para confirmar a troca.</div>
+      <div class="trade-sticker-preview" id="trade-preview-2">
+        <div class="tsp-icon" id="tsp-icon-2">🌟</div>
+        <div class="tsp-info">
+          <div class="tsp-name" id="tsp-name-2">—</div>
+          <div class="tsp-rarity" id="tsp-rarity-2"></div>
+        </div>
+      </div>
+      <input class="trade-confirm-input" id="trade-confirm-input" type="text" maxlength="7" placeholder="Ex: CF-7842" autocomplete="off" oninput="formatarCodigoTrade(this)"/>
+      <div class="trade-msg" id="trade-confirm-msg"></div>
+      <button class="trade-btn primary" onclick="confirmarTroca()">CONFIRMAR E REMOVER FIGURINHA</button>
+      <button class="trade-btn ghost" onclick="voltarStep1()">← VOLTAR</button>
+    </div>
+
+    <!-- STEP 3: Sucesso (Jovem A) -->
+    <div class="trade-step" id="trade-step-3">
+      <div class="trade-success-icon">🎉</div>
+      <div class="trade-title">TROCA REALIZADA!</div>
+      <div class="trade-sub" id="trade-success-msg">A figurinha foi transferida com sucesso!</div>
+      <button class="trade-btn primary" onclick="fecharTrade()" style="margin-top:8px;">FECHAR</button>
+    </div>
+
+    <!-- STEP RECEPTOR: Jovem B recebe a figurinha via QR -->
+    <div class="trade-step" id="trade-step-receptor">
+      <div class="trade-success-icon" style="font-size:48px;">📥</div>
+      <div class="trade-title">FIGURINHA RECEBIDA!</div>
+      <div class="trade-sub">Você recebeu esta figurinha via troca.<br>Mostre o código abaixo para o Jovem A confirmar.</div>
+      <div class="trade-sticker-preview" id="trade-recv-preview">
+        <div class="tsp-icon" id="tsp-recv-icon">🌟</div>
+        <div class="tsp-info">
+          <div class="tsp-name" id="tsp-recv-name">—</div>
+          <div class="tsp-rarity" id="tsp-recv-rarity"></div>
+        </div>
+      </div>
+      <div class="trade-code-badge" style="border-color:rgba(200,233,0,0.9);background:rgba(200,233,0,0.1);">
+        <div class="trade-code-label">Seu Código de Confirmação</div>
+        <div class="trade-code-value" id="recv-code-display" style="font-size:42px;letter-spacing:10px;">——</div>
+        <div style="font-size:10px;color:rgba(200,233,0,0.5);margin-top:4px;">Mostre este código para o Jovem A</div>
+      </div>
+      <div class="trade-msg" id="recv-msg"></div>
+      <button class="trade-btn primary" onclick="fecharTrade()">ENTENDI!</button>
+    </div>
+
+  </div>
+
   <!-- PACK OVERLAY -->
   <div class="pack-overlay" id="pack-overlay">
     <div class="pack-title">PACOTE ABERTO!</div>
@@ -504,21 +462,81 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const TOTAL_STANDS=35,TOTAL_STICKERS=35;
-const MASTER_CODE='SM-3000';
+/* ═══════════════════════════════════════════════════════════════
+   ⚙️  CONFIGURAÇÃO SUPABASE — edite aqui antes de usar
+═══════════════════════════════════════════════════════════════ */
+const SUPABASE_URL  = 'https://SEU_PROJETO.supabase.co';
+const SUPABASE_ANON = 'SUA_CHAVE_ANON_PUBLICA';
 
-// Gera mapa de SM-0001 até SM-1300
+/* SQL para criar as tabelas no Supabase (rode no SQL Editor):
+
+create table if not exists users (
+  code        text primary key,          -- SM-0001
+  nome        text,
+  idade       int,
+  igreja      text,
+  ministerio  text,
+  foto_base64 text,
+  created_at  timestamptz default now()
+);
+
+create table if not exists stands_visited (
+  id         uuid primary key default gen_random_uuid(),
+  user_code  text references users(code),
+  stand_num  int,
+  visited_at timestamptz default now(),
+  unique(user_code, stand_num)
+);
+
+create table if not exists stickers (
+  id         uuid primary key default gen_random_uuid(),
+  user_code  text references users(code),
+  sticker_id int,
+  quantity   int default 1,
+  unique(user_code, sticker_id)
+);
+
+create table if not exists trades (
+  id          uuid primary key default gen_random_uuid(),
+  from_user   text references users(code),
+  sticker_id  int,
+  conf_code   text,               -- CF-XXXX
+  status      text default 'pending',  -- pending | completed | expired
+  to_user     text,
+  created_at  timestamptz default now(),
+  expires_at  timestamptz default now() + interval '10 minutes'
+);
+
+-- RLS: habilite Row Level Security e adicione políticas permissivas para anon
+-- (para evento público sem auth complexa):
+alter table users           enable row level security;
+alter table stands_visited  enable row level security;
+alter table stickers        enable row level security;
+alter table trades          enable row level security;
+
+create policy "public_all" on users           for all using (true) with check (true);
+create policy "public_all" on stands_visited  for all using (true) with check (true);
+create policy "public_all" on stickers        for all using (true) with check (true);
+create policy "public_all" on trades          for all using (true) with check (true);
+*/
+
+/* ═══════════════════════════════════════════════════════════════
+   CONSTANTES DO APP
+═══════════════════════════════════════════════════════════════ */
+const TOTAL_STANDS   = 35, TOTAL_STICKERS = 35;
+const MASTER_CODE    = 'SM-3000';
+
 function gerarCodigosAtivacao(){
   const m={};
-  for(let i=1;i<=1300;i++){
-    const key='SM-'+String(i).padStart(4,'0');
-    m[key]=true;
-  }
+  for(let i=1;i<=1300;i++) m['SM-'+String(i).padStart(4,'0')]=true;
   return m;
 }
-const ACTIVATION_CODES=gerarCodigosAtivacao();
-const POOL=[
+const ACTIVATION_CODES = gerarCodigosAtivacao();
+
+const POOL = [
   {id:1,nome:'Fé',icon:'✝️',r:'N'},{id:2,nome:'Amor',icon:'❤️',r:'N'},
   {id:3,nome:'Oração',icon:'🙏',r:'N'},{id:4,nome:'Paz',icon:'🕊️',r:'N'},
   {id:5,nome:'Louvor',icon:'🎵',r:'N'},{id:6,nome:'Unidos',icon:'🤝',r:'N'},
@@ -538,93 +556,546 @@ const POOL=[
   {id:33,nome:'Hosana',icon:'🎺',r:'L'},{id:34,nome:'Maranata',icon:'⭐',r:'L'},
   {id:35,nome:'Somos Recife',icon:'🌊',r:'L'},
 ];
-const CODES={};
+
+const CODES = {};
 for(let i=1;i<=35;i++) CODES['STAND'+String(i).padStart(2,'0')]=i;
 CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODES['TESTE05']=5;
 
-// Estado por código de ativação
-const gs=()=>{
-  const u=gl();
-  if(!u)return{stands:[],stickers:[]};
-  return JSON.parse(localStorage.getItem('s1_state_'+u)||'{"stands":[],"stickers":{}}');
-};
-const ss=s=>{
-  const u=gl();if(!u)return;
-  localStorage.setItem('s1_state_'+u,JSON.stringify(s));
-};
-const gl=()=>localStorage.getItem('s1_logado')||null;
+/* ═══════════════════════════════════════════════════════════════
+   SUPABASE CLIENT + ESTADO LOCAL (cache)
+═══════════════════════════════════════════════════════════════ */
+let _sb = null;  // cliente Supabase
+let _cache = { stands:[], stickers:{} }; // cache local p/ evitar excesso de reads
+let _userCode = null;
+let _realtimeChannel = null;
 
-// Formata código SM-XXXX enquanto digita
-function formatarCodigo(input){
-  let v=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-  // Se começa com SM e já tem mais de 2 chars, insere hífen
-  if(v.startsWith('SM') && v.length>2){
-    v='SM-'+v.slice(2,6);
+function initSupabase(){
+  if(_sb) return _sb;
+  try {
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    return _sb;
+  } catch(e){
+    console.warn('Supabase não iniciado — modo offline (localStorage):', e);
+    return null;
   }
+}
+
+const gl = () => _userCode || localStorage.getItem('s1_logado') || null;
+
+/* ── Helpers de fallback localStorage ── */
+const gs_local = () => JSON.parse(localStorage.getItem('s1_state_'+(gl()||'')||'{"stands":[],"stickers":{}}'));
+const ss_local = s  => localStorage.setItem('s1_state_'+(gl()||''), JSON.stringify(s));
+
+/* ── Lê estado do Supabase (com fallback local) ── */
+async function gs(){
+  const sb = initSupabase();
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')) return gs_local();
+  const u = gl(); if(!u) return {stands:[],stickers:{}};
+  try {
+    const [{ data: sv }, { data: st }] = await Promise.all([
+      sb.from('stands_visited').select('stand_num').eq('user_code', u),
+      sb.from('stickers').select('sticker_id,quantity').eq('user_code', u)
+    ]);
+    const stands   = (sv||[]).map(r=>r.stand_num);
+    const stickers = {};
+    (st||[]).forEach(r=>{ stickers[r.sticker_id]=r.quantity; });
+    _cache = { stands, stickers };
+    return _cache;
+  } catch(e){ console.warn('gs fallback:', e); return _cache; }
+}
+
+/* ── Salva stand visitado ── */
+async function addStand(num){
+  const sb = initSupabase();
+  const u  = gl(); if(!u) return;
+  _cache.stands.push(num);
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    const s=gs_local(); s.stands.push(num); ss_local(s); return;
+  }
+  try {
+    await sb.from('stands_visited').upsert({ user_code:u, stand_num:num }, { onConflict:'user_code,stand_num' });
+  } catch(e){ console.warn('addStand err:', e); }
+}
+
+/* ── Adiciona ou incrementa figurinha ── */
+async function addSticker(sId, qty=1){
+  const sb = initSupabase();
+  const u  = gl(); if(!u) return;
+  _cache.stickers[sId] = (_cache.stickers[sId]||0) + qty;
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    const s=gs_local();
+    if(!s.stickers[sId]) s.stickers[sId]=0;
+    s.stickers[sId]+=qty; ss_local(s); return;
+  }
+  try {
+    const cur = _cache.stickers[sId];
+    await sb.from('stickers').upsert(
+      { user_code:u, sticker_id:sId, quantity:cur },
+      { onConflict:'user_code,sticker_id' }
+    );
+  } catch(e){ console.warn('addSticker err:', e); }
+}
+
+/* ── Remove 1 cópia de figurinha ── */
+async function removeSticker(sId){
+  const sb = initSupabase();
+  const u  = gl(); if(!u) return false;
+  const curQty = (_cache.stickers[sId]||0);
+  if(curQty < 1) return false;
+  const novaQty = curQty - 1;
+  if(novaQty <= 0) delete _cache.stickers[sId];
+  else _cache.stickers[sId] = novaQty;
+
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    const s=gs_local();
+    if(!s.stickers[sId]||s.stickers[sId]<1) return false;
+    s.stickers[sId]--; if(s.stickers[sId]<=0) delete s.stickers[sId];
+    ss_local(s); return true;
+  }
+  try {
+    if(novaQty <= 0){
+      await sb.from('stickers').delete().eq('user_code',u).eq('sticker_id',sId);
+    } else {
+      await sb.from('stickers').update({ quantity:novaQty }).eq('user_code',u).eq('sticker_id',sId);
+    }
+    return true;
+  } catch(e){ console.warn('removeSticker err:', e); return false; }
+}
+
+/* ── Perfil ── */
+async function salvarPerfilDB(pd){
+  const sb = initSupabase();
+  const u  = gl(); if(!u) return;
+  localStorage.setItem('s1_profile_'+u, JSON.stringify(pd));
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')) return;
+  try {
+    await sb.from('users').upsert({ code:u, ...pd }, { onConflict:'code' });
+  } catch(e){ console.warn('salvarPerfilDB err:', e); }
+}
+
+async function carregarPerfilDB(){
+  const sb = initSupabase();
+  const u  = gl(); if(!u) return {};
+  const local = JSON.parse(localStorage.getItem('s1_profile_'+u)||'{}');
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')) return local;
+  try {
+    const { data } = await sb.from('users').select('nome,idade,igreja,ministerio,foto_base64').eq('code',u).maybeSingle();
+    if(data){
+      localStorage.setItem('s1_profile_'+u, JSON.stringify(data));
+      return data;
+    }
+    return local;
+  } catch(e){ return local; }
+}
+
+/* ── Admin: total de usuários ativos ── */
+async function getTotalAtivos(){
+  const sb = initSupabase();
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    let n=0;
+    for(let i=1;i<=1300;i++) if(localStorage.getItem('s1_state_SM-'+String(i).padStart(4,'0'))) n++;
+    return n;
+  }
+  try {
+    const { count } = await sb.from('users').select('*', { count:'exact', head:true });
+    return count||0;
+  } catch(e){ return 0; }
+}
+
+/* ─────────────────────────────────────────────
+   SISTEMA DE TROCA — Supabase + fallback local
+───────────────────────────────────────────── */
+let _tradeId      = null;
+let _tradeCode    = null;
+let _tradeDbId    = null;  // UUID da linha na tabela trades
+let _sactionId    = null;
+let _qrInstance   = null;
+
+function gerarCodigoTrade(){
+  return 'CF-' + Math.floor(1000+Math.random()*9000);
+}
+
+/* ── Cria trade no Supabase ── */
+async function criarTradeDB(sId, confCode){
+  const sb = initSupabase();
+  const u  = gl();
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    // fallback: localStorage
+    const payload = { id:'local-'+Date.now(), from_user:u, sticker_id:sId, conf_code:confCode, status:'pending' };
+    localStorage.setItem('s1_trade_pending', JSON.stringify(payload));
+    return payload.id;
+  }
+  try {
+    const { data, error } = await sb.from('trades').insert({
+      from_user:  u,
+      sticker_id: sId,
+      conf_code:  confCode,
+      status:     'pending'
+    }).select().single();
+    if(error) throw error;
+    return data.id;
+  } catch(e){ console.warn('criarTradeDB err:', e); return null; }
+}
+
+/* ── Receptor: busca trade pelo QR (tradeDbId) e aplica ── */
+async function receptorReceberTrade(tradeDbId){
+  const sb = initSupabase();
+  const u  = gl();
+
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    const raw = localStorage.getItem('s1_trade_pending');
+    if(!raw) return null;
+    const t = JSON.parse(raw);
+    if(t.status !== 'pending') return null;
+    if(t.from_user === u) return null; // não pode trocar consigo mesmo
+    // Adiciona figurinha ao receptor
+    await addSticker(t.sticker_id);
+    return t;
+  }
+
+  try {
+    // Lê o trade
+    const { data: trade, error } = await sb.from('trades')
+      .select('*').eq('id', tradeDbId).eq('status','pending').maybeSingle();
+    if(error || !trade) return null;
+    if(trade.from_user === u) return null;
+    // Verifica se não expirou
+    if(new Date(trade.expires_at) < new Date()) return null;
+
+    // Marca que esse receptor está processando (atualiza to_user)
+    await sb.from('trades').update({ to_user: u }).eq('id', tradeDbId).eq('status','pending');
+
+    // Adiciona figurinha ao receptor
+    await addSticker(trade.sticker_id);
+    return trade;
+  } catch(e){ console.warn('receptorReceberTrade err:', e); return null; }
+}
+
+/* ── Jovem A confirma: valida código CF-XXXX e remove figurinha ── */
+async function confirmarTradeDB(tradeDbId, confCodeDigitado){
+  const sb = initSupabase();
+  const u  = gl();
+
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')){
+    const raw = localStorage.getItem('s1_trade_pending');
+    if(!raw) return { ok:false, msg:'Troca não encontrada.' };
+    const t = JSON.parse(raw);
+    if(t.conf_code !== confCodeDigitado) return { ok:false, msg:'Código incorreto.' };
+    const removido = await removeSticker(t.sticker_id);
+    if(!removido) return { ok:false, msg:'Erro ao remover figurinha.' };
+    localStorage.removeItem('s1_trade_pending');
+    return { ok:true, sticker_id: t.sticker_id };
+  }
+
+  try {
+    const { data: trade, error } = await sb.from('trades')
+      .select('*').eq('id', tradeDbId).eq('from_user', u).eq('status','pending').maybeSingle();
+    if(error || !trade) return { ok:false, msg:'Troca não encontrada ou já confirmada.' };
+    if(trade.conf_code !== confCodeDigitado) return { ok:false, msg:'Código incorreto. Verifique com o Jovem B.' };
+    if(new Date(trade.expires_at) < new Date()) return { ok:false, msg:'Troca expirou. Gere um novo QR.' };
+
+    // Marca como concluída
+    await sb.from('trades').update({ status:'completed' }).eq('id', tradeDbId);
+    // Remove figurinha do Jovem A
+    const removido = await removeSticker(trade.sticker_id);
+    if(!removido) return { ok:false, msg:'Erro ao remover figurinha do inventário.' };
+    return { ok:true, sticker_id: trade.sticker_id };
+  } catch(e){ return { ok:false, msg:'Erro de conexão. Tente novamente.' }; }
+}
+
+/* ─────────────────────────────────────────────
+   REALTIME — Jovem A é notificado quando
+   Jovem B escaneia (to_user preenchido)
+───────────────────────────────────────────── */
+function ouvirTrade(tradeDbId){
+  const sb = initSupabase();
+  if(!sb || SUPABASE_URL.includes('SEU_PROJETO')) return;
+  // Limpa canal anterior
+  if(_realtimeChannel){ sb.removeChannel(_realtimeChannel); _realtimeChannel=null; }
+  _realtimeChannel = sb.channel('trade-'+tradeDbId)
+    .on('postgres_changes',{
+      event:'UPDATE', schema:'public', table:'trades',
+      filter:`id=eq.${tradeDbId}`
+    }, payload => {
+      const t = payload.new;
+      // Jovem B escaneou → mostra indicador visual
+      if(t.to_user && t.to_user !== gl() && t.status === 'pending'){
+        const timerEl = document.getElementById('trade-timer');
+        if(timerEl){
+          timerEl.textContent = '✅ Jovem B escaneou! Aguardando você confirmar.';
+          timerEl.style.color = '#C8E900';
+        }
+        // Pulsa o botão CONFIRMAR
+        const btn = document.querySelector('#trade-step-1 .trade-btn.primary');
+        if(btn){ btn.style.animation='pulse 0.6s ease 3'; btn.textContent='✅ CONFIRMAR TROCA →'; }
+      }
+    })
+    .subscribe();
+}
+
+function pararOuvirTrade(){
+  const sb = initSupabase();
+  if(sb && _realtimeChannel){ sb.removeChannel(_realtimeChannel); _realtimeChannel=null; }
+}
+
+/* ─────────────────────────────────────────────
+   UI — ACTION SHEET (clicar na figurinha)
+───────────────────────────────────────────── */
+function abrirSAction(sId){
+  const qty = _cache.stickers[sId]||0;
+  if(!qty) return;
+  _sactionId = sId;
+  const s  = POOL.find(x=>x.id===sId);
+  const rl = s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+  const cor= s.r==='L'?'color:#ffd700':s.r==='R'?'color:#7bc5ff':'color:rgba(255,255,255,0.5)';
+  document.getElementById('saction-icon').textContent    = s.icon;
+  document.getElementById('saction-name').textContent    = s.nome;
+  document.getElementById('saction-rarity').textContent  = rl;
+  document.getElementById('saction-rarity').style.cssText= cor;
+  document.getElementById('saction-qty').textContent     = qty+'x no inventário';
+  const btn = document.getElementById('btn-trocar-action');
+  if(qty < 2){
+    btn.disabled=true; btn.style.opacity='0.4';
+    document.getElementById('saction-info-line').textContent='⚠️ Precisa de 2+ cópias para trocar';
+  } else {
+    btn.disabled=false; btn.style.opacity='1';
+    document.getElementById('saction-info-line').textContent='';
+  }
+  document.getElementById('saction-overlay').classList.add('show');
+}
+function fecharSAction(){ document.getElementById('saction-overlay').classList.remove('show'); _sactionId=null; }
+
+/* ── VER figurinha (detalhe) ── */
+function verFigurinha(){
+  if(!_sactionId) return;
+  const qty = _cache.stickers[_sactionId]||0;
+  const s   = POOL.find(x=>x.id===_sactionId);
+  const rl  = s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+  const corBg = s.r==='L'?'background:rgba(255,200,0,0.18);color:#ffd700'
+               :s.r==='R'?'background:rgba(100,180,255,0.18);color:#7bc5ff'
+               :'background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6)';
+  document.getElementById('sdetail-icon').textContent         = s.icon;
+  document.getElementById('sdetail-name').textContent         = s.nome;
+  document.getElementById('sdetail-rarity-badge').textContent = rl;
+  document.getElementById('sdetail-rarity-badge').style.cssText = corBg+';letter-spacing:2px;font-size:11px;font-weight:700;padding:4px 14px;border-radius:8px;display:inline-block;margin-bottom:16px;';
+  document.getElementById('sdetail-qty').textContent          = qty;
+  document.getElementById('sdetail-dup').textContent          = qty>1?(qty-1)+' repetida(s) — pode trocar!':'Não tem repetida';
+  fecharSAction();
+  document.getElementById('sdetail-overlay').classList.add('show');
+}
+function fecharSDetail(){ document.getElementById('sdetail-overlay').classList.remove('show'); }
+
+/* ── INICIAR TROCA ── */
+async function iniciarTroca(){
+  if(!_sactionId) return;
+  const qty = _cache.stickers[_sactionId]||0;
+  if(qty < 2){ alert('Você precisa de pelo menos 2 cópias para trocar!'); return; }
+
+  _tradeId   = _sactionId;
+  _tradeCode = gerarCodigoTrade();
+  const s    = POOL.find(x=>x.id===_tradeId);
+  const rl   = s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+  const cor  = s.r==='L'?'color:#ffd700':s.r==='R'?'color:#7bc5ff':'color:rgba(255,255,255,0.5)';
+
+  fecharSAction();
+  mostrarTradeStep(1);
+  document.getElementById('trade-overlay').classList.add('show');
+
+  // Preenche previews
+  ['','2'].forEach(sfx=>{
+    document.getElementById('tsp-icon'+sfx).textContent    = s.icon;
+    document.getElementById('tsp-name'+sfx).textContent    = s.nome;
+    document.getElementById('tsp-rarity'+sfx).textContent  = rl;
+    document.getElementById('tsp-rarity'+sfx).style.cssText= cor;
+  });
+  document.getElementById('trade-code-display').textContent = _tradeCode;
+  document.getElementById('trade-timer').textContent        = '⏱ Válido por 10 minutos';
+  document.getElementById('trade-confirm-msg').textContent  = '';
+
+  // Cria no Supabase (async) e gera QR com o ID retornado
+  const wrapper = document.getElementById('qr-wrapper');
+  wrapper.innerHTML = '<div style="width:200px;height:200px;background:#fff;display:flex;align-items:center;justify-content:center;border-radius:8px;"><div style="font-size:11px;color:#333;text-align:center;">Gerando QR...</div></div>';
+
+  _tradeDbId = await criarTradeDB(_tradeId, _tradeCode);
+
+  // QR contém só o UUID da troca — leve e seguro
+  const qrData = JSON.stringify({ trade_id: _tradeDbId, conf_code: _tradeCode });
+  wrapper.innerHTML = '';
+  try {
+    _qrInstance = new QRCode(wrapper, {
+      text: qrData, width:200, height:200,
+      colorDark:'#000000', colorLight:'#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e){
+    wrapper.innerHTML = '<div style="width:200px;height:200px;background:#fff;display:flex;align-items:center;justify-content:center;border-radius:8px;padding:12px;text-align:center;"><div style="font-family:monospace;font-size:14px;font-weight:bold;color:#000;word-break:break-all;">'+(qrData)+'</div></div>';
+  }
+
+  // Escuta realtime para saber quando Jovem B escanear
+  if(_tradeDbId) ouvirTrade(_tradeDbId);
+}
+
+/* ── Step 2: confirmar ── */
+function irParaStep2(){
+  document.getElementById('trade-confirm-input').value='';
+  document.getElementById('trade-confirm-msg').textContent='';
+  mostrarTradeStep(2);
+}
+function voltarStep1(){ mostrarTradeStep(1); }
+function formatarCodigoTrade(input){
+  let v=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(v.startsWith('CF')&&v.length>2) v='CF-'+v.slice(2,6);
   input.value=v;
 }
 
-window.onload=function(){
-  // Limpa sessão ao abrir
+async function confirmarTroca(){
+  const digitado = document.getElementById('trade-confirm-input').value.trim().toUpperCase();
+  const msg      = document.getElementById('trade-confirm-msg');
+  if(!digitado){ msg.className='trade-msg erro'; msg.textContent='Digite o código que o Jovem B mostrou.'; return; }
+
+  msg.className='trade-msg'; msg.textContent='Verificando...';
+  const btn = document.querySelector('#trade-step-2 .trade-btn.primary');
+  if(btn){ btn.disabled=true; btn.textContent='Aguarde...'; }
+
+  const result = await confirmarTradeDB(_tradeDbId, digitado);
+
+  if(btn){ btn.disabled=false; btn.textContent='CONFIRMAR E REMOVER FIGURINHA'; }
+
+  if(!result.ok){ msg.className='trade-msg erro'; msg.textContent='❌ '+result.msg; return; }
+
+  const s = POOL.find(x=>x.id===result.sticker_id);
+  document.getElementById('trade-success-msg').textContent = '✓ "'+s.nome+'" foi transferida com sucesso!';
+  pararOuvirTrade();
+  renderStickers(); updateStats();
+  mostrarTradeStep(3);
+}
+
+/* ── RECEPTOR: processa QR escaneado ── */
+async function processarQRTrade(qrText){
+  let payload;
+  try { payload = JSON.parse(qrText); } catch(e){ return; }
+  if(!payload.trade_id) return;
+
+  // Mostra loading
+  mostrarTradeStep('receptor');
+  document.getElementById('trade-overlay').classList.add('show');
+  document.getElementById('recv-code-display').textContent = '...';
+  document.getElementById('tsp-recv-icon').textContent = '⏳';
+  document.getElementById('tsp-recv-name').textContent = 'Processando...';
+  document.getElementById('tsp-recv-rarity').textContent = '';
+
+  const trade = await receptorReceberTrade(payload.trade_id);
+
+  if(!trade){
+    document.getElementById('recv-msg').className='trade-msg erro';
+    document.getElementById('recv-msg').textContent='❌ Troca inválida, expirada ou já utilizada.';
+    document.getElementById('tsp-recv-icon').textContent='❌';
+    document.getElementById('tsp-recv-name').textContent='Erro';
+    return;
+  }
+
+  const s  = POOL.find(x=>x.id===trade.sticker_id);
+  const rl = s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+  const cor= s.r==='L'?'color:#ffd700':s.r==='R'?'color:#7bc5ff':'color:rgba(255,255,255,0.5)';
+
+  document.getElementById('tsp-recv-icon').textContent    = s.icon;
+  document.getElementById('tsp-recv-name').textContent    = s.nome;
+  document.getElementById('tsp-recv-rarity').textContent  = rl;
+  document.getElementById('tsp-recv-rarity').style.cssText= cor;
+  document.getElementById('recv-code-display').textContent= trade.conf_code;
+  document.getElementById('recv-msg').textContent         = '';
+
+  renderStickers(); updateStats();
+}
+
+function mostrarTradeStep(n){
+  document.querySelectorAll('.trade-step').forEach(el=>el.classList.remove('on'));
+  document.getElementById('trade-step-'+n).classList.add('on');
+}
+function fecharTrade(){
+  document.getElementById('trade-overlay').classList.remove('show');
+  pararOuvirTrade();
+  _tradeId=null; _tradeCode=null; _tradeDbId=null;
+}
+
+/* ─────────────────────────────────────────────
+   FORMATO DE CÓDIGO
+───────────────────────────────────────────── */
+function formatarCodigo(input){
+  let v=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(v.startsWith('SM')&&v.length>2) v='SM-'+v.slice(2,6);
+  input.value=v;
+}
+
+/* ─────────────────────────────────────────────
+   SPLASH → LOGIN
+───────────────────────────────────────────── */
+window.onload = function(){
   localStorage.removeItem('s1_logado');
+  _userCode = null;
   setTimeout(()=>{
     const sp=document.getElementById('s-splash');
     sp.classList.add('exit');
-    setTimeout(()=>{
-      sp.classList.remove('active');
-      showLogin();
-    },500);
+    setTimeout(()=>{ sp.classList.remove('active'); showLogin(); },500);
   },1900);
 };
+function showLogin(){ document.getElementById('s-login').classList.add('active'); }
 
-function showLogin(){
-  const sl=document.getElementById('s-login');
-  sl.classList.add('active');
-}
-
-function entrar(){
-  const raw=document.getElementById('act-code').value.trim().toUpperCase();
-  const msg=document.getElementById('login-msg');
-  if(!raw){msg.className='msg erro';msg.textContent='Digite o código de ativação.';return;}
-
+/* ─────────────────────────────────────────────
+   LOGIN
+───────────────────────────────────────────── */
+async function entrar(){
+  const raw = document.getElementById('act-code').value.trim().toUpperCase();
+  const msg = document.getElementById('login-msg');
+  if(!raw){ msg.className='msg erro'; msg.textContent='Digite o código de ativação.'; return; }
   const isMaster=(raw===MASTER_CODE);
-  const isValid=isMaster||ACTIVATION_CODES[raw];
+  if(!isMaster && !ACTIVATION_CODES[raw]){ msg.className='msg erro'; msg.textContent='Código inválido. Ex: SM-0001'; return; }
 
-  if(!isValid){msg.className='msg erro';msg.textContent='Código inválido. Ex: SM-0001';return;}
+  _userCode = raw;
+  localStorage.setItem('s1_logado', raw);
 
-  const userKey=raw;
-  localStorage.setItem('s1_logado',userKey);
+  // Cria usuário no Supabase se não existir
+  const sb = initSupabase();
+  if(sb && !SUPABASE_URL.includes('SEU_PROJETO')){
+    try { await sb.from('users').upsert({ code:raw }, { onConflict:'code', ignoreDuplicates:true }); } catch(e){}
+  }
 
-  const label=isMaster?'Organizador':'Jovem '+raw;
-  msg.className='msg ok';msg.textContent='✓ Bem-vindo, '+label+'!';
+  const label = isMaster?'Organizador':'Jovem '+raw;
+  msg.className='msg ok'; msg.textContent='✓ Bem-vindo, '+label+'!';
+
+  // Carrega estado do Supabase
+  msg.textContent='Carregando dados...';
+  await gs(); // popula _cache
+
   setTimeout(()=>{
     document.getElementById('s-login').classList.remove('active');
-    setTimeout(()=>entrarAlbum(userKey,label),100);
-  },800);
+    setTimeout(()=>entrarAlbum(raw, label),100);
+  },600);
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter')entrar();});
+document.addEventListener('keydown',e=>{ if(e.key==='Enter') entrar(); });
 
-function entrarAlbum(userKey,label){
-  const pd=JSON.parse(localStorage.getItem('s1_profile_'+userKey)||'{}');
-  // Usa nome salvo no perfil se existir, senão usa o label do código
-  const nomeExibir=pd.nome||label||userKey||'?';
-  const init=nomeExibir[0].toUpperCase();
-  setAvatarTexto(init);
-  document.getElementById('p-uname').textContent=nomeExibir.toUpperCase();
-  // Preenche os campos do formulário de perfil
-  if(pd.nome)document.getElementById('p-nome').value=pd.nome;
-  if(pd.idade)document.getElementById('p-idade').value=pd.idade;
-  if(pd.igreja)document.getElementById('p-igreja').value=pd.igreja;
-  if(pd.ministerio)document.getElementById('p-min').value=pd.ministerio;
-  // Carrega foto salva
-  const fotoKey='s1_photo_'+userKey;
-  const fotoSalva=localStorage.getItem(fotoKey);
+/* ─────────────────────────────────────────────
+   ÁLBUM
+───────────────────────────────────────────── */
+async function entrarAlbum(userKey, label){
+  const pd = await carregarPerfilDB();
+  const nomeExibir = pd.nome||label||userKey||'?';
+  setAvatarTexto(nomeExibir[0].toUpperCase());
+  document.getElementById('p-uname').textContent = nomeExibir.toUpperCase();
+  if(pd.nome)  document.getElementById('p-nome').value   = pd.nome;
+  if(pd.idade) document.getElementById('p-idade').value  = pd.idade;
+  if(pd.igreja)document.getElementById('p-igreja').value = pd.igreja;
+  if(pd.ministerio) document.getElementById('p-min').value = pd.ministerio;
+
+  const fotoKey = 's1_photo_'+userKey;
+  const fotoSalva = pd.foto_base64 || localStorage.getItem(fotoKey);
   if(fotoSalva) aplicarFoto(fotoSalva);
-  const isMaster=(userKey==='SM-3000');
-  const adminTab=document.getElementById('tab-admin');
-  if(adminTab) adminTab.style.display=isMaster?'flex':'none';
+
+  const adminTab = document.getElementById('tab-admin');
+  if(adminTab) adminTab.style.display = (userKey===MASTER_CODE)?'flex':'none';
+
   document.getElementById('s-album').classList.add('active');
-  renderStands();renderStickers();updateStats();goTab('stands');
+  renderStands(); renderStickers(); updateStats(); goTab('stands');
 }
 
 function goTab(name){
@@ -636,232 +1107,81 @@ function goTab(name){
   if(name==='admin') renderAdmin();
 }
 
+/* ─────────────────────────────────────────────
+   STANDS
+───────────────────────────────────────────── */
 function renderStands(){
-  const st=gs();
-  const g=document.getElementById('stands-grid');
-  g.innerHTML='';
+  const g = document.getElementById('stands-grid'); g.innerHTML='';
   for(let i=1;i<=TOTAL_STANDS;i++){
     const d=document.createElement('div');
-    d.className='sdot'+(st.stands.includes(i)?' done':'');
-    d.textContent=i;g.appendChild(d);
+    d.className='sdot'+(_cache.stands.includes(i)?' done':'');
+    d.textContent=i; g.appendChild(d);
   }
-  const pct=Math.round(st.stands.length/TOTAL_STANDS*100);
+  const pct=Math.round(_cache.stands.length/TOTAL_STANDS*100);
   document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-text').textContent=st.stands.length+' / '+TOTAL_STANDS+' stands';
+  document.getElementById('prog-text').textContent=_cache.stands.length+' / '+TOTAL_STANDS+' stands';
 }
 
-function resgatarCodigo(){
-  const raw=document.getElementById('code-input').value.trim().toUpperCase();
-  const msg=document.getElementById('code-msg');
-  if(!raw){msg.className='code-msg erro';msg.textContent='Digite o código do stand.';return;}
-  const num=CODES[raw];
-  if(!num){msg.className='code-msg erro';msg.textContent='Código inválido.';return;}
-  const st=gs();
-  if(st.stands.includes(num)){msg.className='code-msg erro';msg.textContent='Você já visitou este stand!';return;}
-  const novas=sortear(st,3);
-  st.stands.push(num);
-  novas.forEach(s=>{
-    if(!st.stickers[s.id]) st.stickers[s.id]=0;
-    st.stickers[s.id]++;
-  });
-  ss(st);
+async function resgatarCodigo(){
+  const raw = document.getElementById('code-input').value.trim().toUpperCase();
+  const msg = document.getElementById('code-msg');
+  if(!raw){ msg.className='code-msg erro'; msg.textContent='Digite o código do stand.'; return; }
+  const num = CODES[raw];
+  if(!num){ msg.className='code-msg erro'; msg.textContent='Código inválido.'; return; }
+  if(_cache.stands.includes(num)){ msg.className='code-msg erro'; msg.textContent='Você já visitou este stand!'; return; }
+
+  msg.className='code-msg'; msg.textContent='Salvando...';
+  const novas = sortear(3);
+  await addStand(num);
+  for(const s of novas) await addSticker(s.id);
+
   document.getElementById('code-input').value='';
-  msg.className='code-msg ok';msg.textContent='✓ Stand '+num+' resgatado!';
-  setTimeout(()=>{msg.textContent='';},3000);
-  renderStands();renderStickers();updateStats();mostrarPacote(novas);
+  msg.className='code-msg ok'; msg.textContent='✓ Stand '+num+' resgatado!';
+  setTimeout(()=>{ msg.textContent=''; },3000);
+  renderStands(); renderStickers(); updateStats(); mostrarPacote(novas);
 }
 
-function sortear(st,qty){
+function sortear(qty){
   const res=[];
   for(let i=0;i<qty;i++){
-    const r=Math.random();
-    let candidates;
-    if(r<0.10) candidates=POOL.filter(s=>s.r==='L');
-    else if(r<0.35) candidates=POOL.filter(s=>s.r==='R');
-    else candidates=POOL.filter(s=>s.r==='N');
-    if(!candidates.length) candidates=POOL;
-    res.push(candidates[Math.floor(Math.random()*candidates.length)]);
+    const r=Math.random(); let c;
+    if(r<0.10) c=POOL.filter(s=>s.r==='L');
+    else if(r<0.35) c=POOL.filter(s=>s.r==='R');
+    else c=POOL.filter(s=>s.r==='N');
+    if(!c.length) c=POOL;
+    res.push(c[Math.floor(Math.random()*c.length)]);
   }
   return res;
 }
 
 function mostrarPacote(stickers){
-  const c=document.getElementById('pack-cards');c.innerHTML='';
+  const c=document.getElementById('pack-cards'); c.innerHTML='';
   stickers.forEach((s,i)=>{
     const d=document.createElement('div');
-    d.className='pack-card';d.style.animationDelay=(i*0.13)+'s';
+    d.className='pack-card'; d.style.animationDelay=(i*0.13)+'s';
     const rl=s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
     d.innerHTML='<div class="pack-card-icon">'+s.icon+'</div><div class="pack-card-name">'+s.nome+'</div><div class="pack-card-rarity r'+s.r+'">'+rl+'</div>';
     c.appendChild(d);
   });
   document.getElementById('pack-overlay').classList.add('show');
 }
-function fecharPacote(){document.getElementById('pack-overlay').classList.remove('show');}
+function fecharPacote(){ document.getElementById('pack-overlay').classList.remove('show'); }
 
-
-let idFigurinhaSelecionada = null;
-let figurinhaSelecionadaHas = false;
-let codigoSessaoAtual = '';
-
-function abrirOpcoesFigurinha(id, has) {
-  idFigurinhaSelecionada = id;
-  figurinhaSelecionadaHas = has;
-  
-  const figurinha = POOL.find(s => s.id === id);
-  const tituloElement = document.getElementById('opcoesTituloFigurinha');
-  if (tituloElement && figurinha) {
-    tituloElement.textContent = has ? figurinha.nome.toUpperCase() : `FIGURINHA Nº ${id}`;
-  }
-  
-  const btnTrocar = document.getElementById('btnOpcaoTrocar');
-  if(has) {
-    btnTrocar.style.display = 'flex';
-  } else {
-    btnTrocar.style.display = 'none'; // Não pode trocar o que não tem
-  }
-
-  document.getElementById('modalOpcoesFigurinha').style.display = 'flex';
-}
-
-function fecharOpcoesFigurinha(event) {
-  if (!event || event.target === document.getElementById('modalOpcoesFigurinha') || event === null) {
-    document.getElementById('modalOpcoesFigurinha').style.display = 'none';
-  }
-}
-
-function executarOpcaoVer() {
-  document.getElementById('modalOpcoesFigurinha').style.display = 'none';
-  const figurinha = POOL.find(s => s.id === idFigurinhaSelecionada);
-  if(!figurinha) return;
-
-  document.getElementById('verNum').textContent = `Nº ${figurinha.id}`;
-  if(figurinhaSelecionadaHas) {
-      document.getElementById('verIcon').textContent = figurinha.icon;
-      document.getElementById('verName').textContent = figurinha.nome;
-      document.getElementById('verName').style.color = '#C8E900';
-  } else {
-      document.getElementById('verIcon').textContent = '❓';
-      document.getElementById('verName').textContent = 'BLOQUEADA';
-      document.getElementById('verName').style.color = 'rgba(255,255,255,0.3)';
-  }
-  document.getElementById('modalVerFigurinha').classList.add('show');
-}
-
-function fecharModalVer() {
-  document.getElementById('modalVerFigurinha').classList.remove('show');
-}
-
-/* --- LÓGICA DE TROCA (FLUXO QR) --- */
-function executarOpcaoTrocar() {
-  document.getElementById('modalOpcoesFigurinha').style.display = 'none';
-  abrirTelaTrocas();
-}
-
-function abrirTelaTrocas() {
-  document.getElementById('telaTrocas').style.display = 'flex';
-  irParaPainel('escolha'); // Inicia sempre no painel de escolha
-}
-
-function fecharTelaTrocas() {
-  document.getElementById('telaTrocas').style.display = 'none';
-}
-
-function irParaPainel(painelId) {
-  // Esconde todos
-  const paineis = document.querySelectorAll('.painel-troca');
-  paineis.forEach(p => p.classList.remove('ativo'));
-
-  // Lógica específica por painel
-  if(painelId === 'gerar') {
-    gerarCodigoSessao();
-    document.getElementById('painelGerar').classList.add('ativo');
-  } else if (painelId === 'ler') {
-    document.getElementById('inputCodigoSessao').value = '';
-    document.getElementById('painelLer').classList.add('ativo');
-    // Em um app real, aqui chamaria a API da Câmera
-  } else if (painelId === 'mesa') {
-    renderizarRepetidas();
-    document.getElementById('painelMesa').classList.add('ativo');
-  } else {
-    document.getElementById('painelEscolha').classList.add('ativo');
-  }
-}
-
-function gerarCodigoSessao() {
-  // Gera código aleatório S1-XXXX
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let rand = '';
-  for(let i=0; i<4; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
-  codigoSessaoAtual = 'S1-' + rand;
-  
-  document.getElementById('textoCodigoSessao').textContent = codigoSessaoAtual;
-  
-  // Usando uma API pública para gerar o QR code falso simulando a conexão local
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${codigoSessaoAtual}`;
-  document.getElementById('imgQrGerado').src = qrUrl;
-}
-
-function validarConexao() {
-  const input = document.getElementById('inputCodigoSessao').value.trim().toUpperCase();
-  if(input === '') {
-    alert('Digite o código de sessão do seu parceiro.');
-    return;
-  }
-  
-  // Simula a validação (poderia checar banco de dados/firebase)
-  alert('Conectado à sessão: ' + input + '\nSincronizando álbuns...');
-  irParaPainel('mesa');
-}
-
-function renderizarRepetidas() {
-  const st = gs();
-  const container = document.getElementById('containerRepetidas');
-  container.innerHTML = '';
-  
-  let temRepetidas = false;
-  
-  POOL.forEach(s => {
-    const qty = st.stickers[s.id] || 0;
-    if(qty > 1) { // Só é repetida se tiver mais de 1
-      temRepetidas = true;
-      const repetidas = qty - 1; // Quantidade disponível para troca
-      const d = document.createElement('div');
-      d.className = 'card-repetida';
-      d.innerHTML = `
-        <span class="qtd-badge">${repetidas}x</span>
-        <div class="icon-fig">${s.icon}</div>
-        <div class="num-fig">${s.nome}</div>
-      `;
-      // Ao clicar na repetida na mesa de negociação (simulação)
-      d.onclick = () => alert(`Figurinha ${s.nome} selecionada para oferta!`);
-      container.appendChild(d);
-    }
-  });
-  
-  if(!temRepetidas) {
-    container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: rgba(255,255,255,0.3); font-size: 11px; padding: 20px 0;">Você não possui figurinhas repetidas para oferecer no momento.</div>';
-  }
-}
-
+/* ─────────────────────────────────────────────
+   ÁLBUM DE FIGURINHAS
+───────────────────────────────────────────── */
 function renderStickers(){
-  const st=gs();
-  // migração: se stickers ainda for array antigo, converte
-  if(Array.isArray(st.stickers)){
-    const obj={};
-    st.stickers.forEach(id=>{obj[id]=1;});
-    st.stickers=obj; ss(st);
-  }
-  const g=document.getElementById('stickers-grid');g.innerHTML='';
+  const g=document.getElementById('stickers-grid'); g.innerHTML='';
   POOL.forEach(s=>{
-    const qty=st.stickers[s.id]||0;
+    const qty=_cache.stickers[s.id]||0;
     const has=qty>0;
     const d=document.createElement('div');
     d.className='slot'+(has?' got':'');
-    d.setAttribute('onclick', `abrirOpcoesFigurinha(${s.id}, ${has})`);
     if(has){
       const rl=s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
       const badge=qty>1?'<span class="qty-badge">'+qty+'x</span>':'';
       d.innerHTML=badge+'<span class="rbadge r'+s.r+'">'+rl+'</span><div class="slot-icon">'+s.icon+'</div><div class="slot-name">'+s.nome+'</div>';
+      d.onclick=()=>abrirSAction(s.id);
     } else {
       d.innerHTML='<div class="slot-num">'+s.id+'</div>';
     }
@@ -870,83 +1190,80 @@ function renderStickers(){
 }
 
 function updateStats(){
-  const st=gs();
-  const totalFigs=Array.isArray(st.stickers)?st.stickers.length:Object.keys(st.stickers).length;
-  document.getElementById('ps-stands').textContent=st.stands.length;
-  document.getElementById('ps-stickers').textContent=totalFigs;
-  document.getElementById('ps-pct').textContent=Math.round(totalFigs/TOTAL_STICKERS*100)+'%';
+  const totalFigs = Object.keys(_cache.stickers).length;
+  document.getElementById('ps-stands').textContent   = _cache.stands.length;
+  document.getElementById('ps-stickers').textContent = totalFigs;
+  document.getElementById('ps-pct').textContent      = Math.round(totalFigs/TOTAL_STICKERS*100)+'%';
 }
 
-function getCodigosAtivos(){
-  const ativos=[];
-  for(let i=1;i<=1300;i++){
-    const key='SM-'+String(i).padStart(4,'0');
-    if(localStorage.getItem('s1_state_'+key)!==null){
-      ativos.push(key);
+/* ─────────────────────────────────────────────
+   ADMIN
+───────────────────────────────────────────── */
+async function renderAdmin(filtro){
+  const total = await getTotalAtivos();
+  const pct   = Math.round(total/1300*100);
+  document.getElementById('admin-total').textContent   = total;
+  document.getElementById('admin-prog').style.width    = pct+'%';
+  document.getElementById('admin-prog-text').textContent = total+' / 1300 códigos';
+
+  const sb = initSupabase();
+  const lista = document.getElementById('admin-list');
+  lista.innerHTML='<div style="font-size:11px;color:rgba(200,233,0,0.35);text-align:center;padding:8px;">Carregando...</div>';
+
+  let ativos = [];
+  if(sb && !SUPABASE_URL.includes('SEU_PROJETO')){
+    try {
+      let q = sb.from('users').select('code');
+      if(filtro) q = q.ilike('code','%'+filtro+'%');
+      const { data } = await q.order('code').limit(200);
+      ativos = (data||[]).map(r=>r.code);
+    } catch(e){}
+  } else {
+    for(let i=1;i<=1300;i++){
+      const k='SM-'+String(i).padStart(4,'0');
+      if(localStorage.getItem('s1_state_'+k)) ativos.push(k);
     }
+    if(filtro) ativos=ativos.filter(c=>c.includes(filtro.toUpperCase()));
   }
-  return ativos;
-}
 
-function renderAdmin(filtro){
-  const ativos=getCodigosAtivos();
-  const total=ativos.length;
-  const pct=Math.round(total/1300*100);
-  document.getElementById('admin-total').textContent=total;
-  document.getElementById('admin-prog').style.width=pct+'%';
-  document.getElementById('admin-prog-text').textContent=total+' / 1300 códigos';
-  const lista=document.getElementById('admin-list');
   lista.innerHTML='';
-  const mostrar=filtro?ativos.filter(c=>c.includes(filtro.toUpperCase())):ativos;
-  if(!mostrar.length){
+  if(!ativos.length){
     lista.innerHTML='<div style="font-size:11px;color:rgba(200,233,0,0.35);width:100%;text-align:center;padding:10px 0;">Nenhum código encontrado</div>';
     return;
   }
-  mostrar.forEach(c=>{
+  ativos.forEach(c=>{
     const d=document.createElement('div');
     d.style.cssText='background:rgba(200,233,0,0.1);border:1px solid rgba(200,233,0,0.3);border-radius:8px;padding:5px 10px;font-family:Bebas Neue,sans-serif;font-size:13px;letter-spacing:1px;color:#C8E900;';
-    const st=JSON.parse(localStorage.getItem('s1_state_'+c)||'{"stands":[],"stickers":[]}');
-    d.textContent=c+' ('+st.stands.length+'★)';
-    d.title=st.stands.length+' stands visitados';
+    d.textContent=c;
     lista.appendChild(d);
   });
 }
-
 function filtrarAdmin(){
   const v=document.getElementById('admin-search').value.trim();
   renderAdmin(v||null);
 }
 
-/* ── AVATAR helpers ── */
+/* ─────────────────────────────────────────────
+   AVATAR & FOTO
+───────────────────────────────────────────── */
 function setAvatarTexto(letra){
-  // Barra superior
-  const av=document.getElementById('av-init');
-  av.innerHTML=letra;
-  // Avatar grande no perfil
-  const pav=document.getElementById('pav');
+  document.getElementById('av-init').innerHTML=letra;
   const initTxt=document.getElementById('pav-init-txt');
   if(initTxt) initTxt.textContent=letra;
 }
-
 function aplicarFoto(base64){
-  // Barra superior
-  const av=document.getElementById('av-init');
-  av.innerHTML='<img src="'+base64+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
-  // Avatar grande
+  document.getElementById('av-init').innerHTML='<img src="'+base64+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
   const pav=document.getElementById('pav');
   const initTxt=document.getElementById('pav-init-txt');
   if(initTxt) initTxt.style.display='none';
   let img=pav.querySelector('img.pav-foto');
-  if(!img){img=document.createElement('img');img.className='pav-foto';img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;';pav.appendChild(img);}
+  if(!img){ img=document.createElement('img'); img.className='pav-foto'; img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;'; pav.appendChild(img); }
   img.src=base64;
-  // Preview no modal
   const prev=document.getElementById('photo-preview');
   prev.innerHTML='<img src="'+base64+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
   const btnRem=document.getElementById('btn-remover-foto');
   if(btnRem) btnRem.style.display='';
 }
-
-/* ── FOTO MODAL ── */
 function abrirFotoModal(){
   const userKey=gl();
   const init=(document.getElementById('p-uname').textContent||'?')[0];
@@ -961,64 +1278,57 @@ function abrirFotoModal(){
   }
   document.getElementById('photo-modal').classList.add('show');
 }
-
-function fecharFotoModal(){
-  document.getElementById('photo-modal').classList.remove('show');
-}
-
-function usarCamera(){
-  document.getElementById('camera-input').click();
-}
-
+function fecharFotoModal(){ document.getElementById('photo-modal').classList.remove('show'); }
+function usarCamera(){ document.getElementById('camera-input').click(); }
 function processarFoto(event){
-  const file=event.target.files[0];
-  if(!file) return;
+  const file=event.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=function(e){
-    const base64=e.target.result;
-    // Redimensiona para max 400px para não pesar demais
     const img=new Image();
     img.onload=function(){
       const canvas=document.createElement('canvas');
-      const max=400;
-      let w=img.width,h=img.height;
+      const max=400; let w=img.width,h=img.height;
       if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}
       else{if(h>max){w=Math.round(w*max/h);h=max;}}
       canvas.width=w;canvas.height=h;
       canvas.getContext('2d').drawImage(img,0,0,w,h);
       const compressed=canvas.toDataURL('image/jpeg',0.75);
       const userKey=gl();
-      if(userKey) localStorage.setItem('s1_photo_'+userKey, compressed);
-      aplicarFoto(compressed);
-      fecharFotoModal();
+      if(userKey) localStorage.setItem('s1_photo_'+userKey,compressed);
+      aplicarFoto(compressed); fecharFotoModal();
     };
-    img.src=base64;
+    img.src=e.target.result;
   };
   reader.readAsDataURL(file);
   event.target.value='';
 }
-
 function removerFoto(){
   const userKey=gl();
   if(userKey) localStorage.removeItem('s1_photo_'+userKey);
-  // Restaura inicial de texto
   const init=(document.getElementById('p-uname').textContent||'?')[0];
-  const av=document.getElementById('av-init');
-  av.innerHTML=init;
+  document.getElementById('av-init').innerHTML=init;
   const pav=document.getElementById('pav');
-  const foto=pav.querySelector('img.pav-foto');
-  if(foto) foto.remove();
+  const foto=pav.querySelector('img.pav-foto'); if(foto) foto.remove();
   const initTxt=document.getElementById('pav-init-txt');
-  if(initTxt){initTxt.style.display='';initTxt.textContent=init;}
+  if(initTxt){ initTxt.style.display=''; initTxt.textContent=init; }
   fecharFotoModal();
 }
 
-function salvarPerfil(){
-  const userKey=gl();if(!userKey)return;
-  const pd={nome:document.getElementById('p-nome').value,idade:document.getElementById('p-idade').value,igreja:document.getElementById('p-igreja').value,ministerio:document.getElementById('p-min').value};
-  localStorage.setItem('s1_profile_'+userKey,JSON.stringify(pd));
-  const msg=document.getElementById('save-msg');msg.textContent='✓ Perfil salvo!';
-  setTimeout(()=>{msg.textContent='';},2500);
+/* ─────────────────────────────────────────────
+   PERFIL
+───────────────────────────────────────────── */
+async function salvarPerfil(){
+  const userKey=gl(); if(!userKey) return;
+  const pd={
+    nome:      document.getElementById('p-nome').value,
+    idade:     document.getElementById('p-idade').value,
+    igreja:    document.getElementById('p-igreja').value,
+    ministerio:document.getElementById('p-min').value
+  };
+  await salvarPerfilDB(pd);
+  const msg=document.getElementById('save-msg');
+  msg.textContent='✓ Perfil salvo!';
+  setTimeout(()=>{ msg.textContent=''; },2500);
   if(pd.nome){
     setAvatarTexto(pd.nome[0].toUpperCase());
     document.getElementById('p-uname').textContent=pd.nome.toUpperCase();
