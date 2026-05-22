@@ -1447,22 +1447,7 @@ async function salvarPerfil(){
     setTimeout(function(){ banner.classList.add('show'); }, 2000);
   });
 
-  // ── 4. Fallback Android: se o evento não disparou em 4s, mostra instruções manuais ──
-  if(isAndroid){
-    setTimeout(function(){
-      if(!_deferredPrompt && !banner.classList.contains('show')){
-        // Evento não disparou — app já instalado, ou Chrome não suporta nesta versão
-        // Mostra instruções manuais via menu do Chrome
-        var sub = document.getElementById('pwa-banner-sub');
-        if(sub) sub.textContent = 'Toque em ⋮ (menu) → "Adicionar à tela inicial"';
-        btnInstall.textContent = 'Entendido';
-        btnInstall.onclick = function(){ window.pwaDismiss(); };
-        banner.classList.add('show');
-      }
-    }, 4000);
-  }
-
-  // ── 5. iOS Safari: instruções manuais ──
+  // ── 4. iOS Safari: instruções manuais ──
   if(isIOS){
     var isSafari = /safari/i.test(navigator.userAgent) && !/crios|fxios|opios/i.test(navigator.userAgent);
     if(isSafari){
