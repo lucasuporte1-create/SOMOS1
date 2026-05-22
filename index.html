@@ -4,6 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Somos 1 — Álbum</title>
+<meta name="theme-color" content="#000000"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Somos 1"/>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Somos%201%20%E2%80%94%20%C3%81lbum%22%2C%22short_name%22%3A%22Somos%201%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23C8E900%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAdJJREFUeJzt0jERAAAIwzDAv%2BcxAQuSXqBnexISmAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAMAAP%2F%2FDaUGAQAAAABJRU5ErkJggg%3D%3D%22%2C%22type%22%3A%22image%2Fpng%22%2C%22sizes%22%3A%22192x192%22%7D%5D%7D"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -200,6 +206,21 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .pack-card-name{font-size:9px;font-weight:600;color:rgba(200,233,0,0.85);text-align:center;margin-top:7px;text-transform:uppercase;letter-spacing:0.5px;}
 .pack-card-rarity{font-size:8px;margin-top:4px;padding:2px 6px;border-radius:4px;font-weight:700;}
 .pack-close{margin-top:24px;padding:12px 38px;background:#C8E900;color:#111;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;animation:fadeUp 0.4s 0.5s ease both;}
+
+/* ── PWA INSTALL BANNER ── */
+#pwa-banner{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(390px,100vw);z-index:9999;padding:14px 18px 28px;background:rgba(10,10,10,0.97);border-top:1px solid rgba(200,233,0,0.3);display:none;flex-direction:column;gap:10px;backdrop-filter:blur(16px);}
+#pwa-banner.show{display:flex;}
+.pwa-banner-row{display:flex;align-items:center;gap:12px;}
+.pwa-banner-icon{width:46px;height:46px;background:#C8E900;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#111;font-weight:900;flex-shrink:0;}
+.pwa-banner-text{flex:1;}
+.pwa-banner-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#C8E900;}
+.pwa-banner-sub{font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;line-height:1.5;}
+.pwa-banner-btns{display:flex;gap:8px;}
+.pwa-btn-install{flex:1;padding:12px;background:#C8E900;color:#111;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;cursor:pointer;}
+.pwa-btn-close{padding:12px 14px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer;}
+.pwa-ios-steps{font-size:11px;color:rgba(200,233,0,0.7);line-height:1.8;padding:10px 12px;background:rgba(200,233,0,0.06);border-radius:10px;border:1px solid rgba(200,233,0,0.15);}
+.pwa-ios-steps span{color:#C8E900;font-weight:700;}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -1336,5 +1357,76 @@ async function salvarPerfil(){
   }
 }
 </script>
+
+<!-- PWA Install Banner -->
+<div id="pwa-banner">
+  <div class="pwa-banner-row">
+    <div class="pwa-banner-icon">S1</div>
+    <div class="pwa-banner-text">
+      <div class="pwa-banner-title">Adicionar à Tela Inicial</div>
+      <div class="pwa-banner-sub" id="pwa-banner-sub">Instale o app para acesso rápido durante o evento</div>
+    </div>
+  </div>
+  <div id="pwa-ios-steps" class="pwa-ios-steps" style="display:none;">
+    1. Toque em <span>Compartilhar</span> (ícone de caixa com seta) na barra do Safari<br>
+    2. Role e toque em <span>"Adicionar à Tela de Início"</span><br>
+    3. Toque em <span>Adicionar</span> ✓
+  </div>
+  <div class="pwa-banner-btns">
+    <button class="pwa-btn-install" id="pwa-btn-install" onclick="pwaTriggerInstall()">Instalar</button>
+    <button class="pwa-btn-close" onclick="pwaDismiss()">Agora não</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Não mostrar se já está instalado como PWA
+  if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
+  // Não mostrar se já dispensou
+  if(sessionStorage.getItem('pwa_dismissed')) return;
+
+  const banner = document.getElementById('pwa-banner');
+  const iosSteps = document.getElementById('pwa-ios-steps');
+  const btnInstall = document.getElementById('pwa-btn-install');
+  let _deferredPrompt = null;
+
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /android/i.test(navigator.userAgent);
+
+  // Android: captura evento beforeinstallprompt
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    _deferredPrompt = e;
+    setTimeout(()=>{ banner.classList.add('show'); }, 3000);
+  });
+
+  // iOS Safari: mostra instruções manuais
+  if(isIOS){
+    const isSafari = /safari/i.test(navigator.userAgent) && !/crios|fxios|opios/i.test(navigator.userAgent);
+    if(isSafari){
+      iosSteps.style.display = 'block';
+      btnInstall.textContent = 'Como instalar?';
+      btnInstall.onclick = function(){ iosSteps.scrollIntoView({behavior:'smooth'}); };
+      setTimeout(()=>{ banner.classList.add('show'); }, 3000);
+    }
+  }
+
+  window.pwaTriggerInstall = function(){
+    if(_deferredPrompt){
+      _deferredPrompt.prompt();
+      _deferredPrompt.userChoice.then(function(r){
+        _deferredPrompt = null;
+        banner.classList.remove('show');
+      });
+    }
+  };
+
+  window.pwaDismiss = function(){
+    banner.classList.remove('show');
+    sessionStorage.setItem('pwa_dismissed','1');
+  };
+})();
+</script>
+
 </body>
 </html>
