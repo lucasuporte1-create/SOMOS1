@@ -1411,37 +1411,69 @@ async function salvarPerfil(){
 
 <script>
 (function(){
-  // Não mostrar se já está instalado como PWA
+  // ── 1. Registrar Service Worker (obrigatório para beforeinstallprompt no Android) ──
+  if('serviceWorker' in navigator){
+    // SW inline via Blob para funcionar sem arquivo externo
+    var swCode = [
+      'self.addEventListener("install", function(e){ self.skipWaiting(); });',
+      'self.addEventListener("activate", function(e){ e.waitUntil(clients.claim()); });',
+      'self.addEventListener("fetch", function(e){',
+      '  e.respondWith(fetch(e.request).catch(function(){ return new Response("", {status:503}); }));',
+      '});'
+    ].join('\n');
+    var blob = new Blob([swCode], {type:'application/javascript'});
+    var swUrl = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl).catch(function(){});
+  }
+
+  // ── 2. Não mostrar se já está instalado como PWA ──
   if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
-  // Não mostrar se já dispensou
+  // Não mostrar se já dispensou nesta sessão
   if(sessionStorage.getItem('pwa_dismissed')) return;
 
-  const banner = document.getElementById('pwa-banner');
-  const iosSteps = document.getElementById('pwa-ios-steps');
-  const btnInstall = document.getElementById('pwa-btn-install');
-  let _deferredPrompt = null;
+  var banner    = document.getElementById('pwa-banner');
+  var iosSteps  = document.getElementById('pwa-ios-steps');
+  var btnInstall = document.getElementById('pwa-btn-install');
+  var _deferredPrompt = null;
 
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-  const isAndroid = /android/i.test(navigator.userAgent);
+  var isIOS     = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  var isAndroid = /android/i.test(navigator.userAgent);
+  var isChrome  = /chrome|crios/i.test(navigator.userAgent) && !/edg/i.test(navigator.userAgent);
 
-  // Android: captura evento beforeinstallprompt
+  // ── 3. Android: captura beforeinstallprompt ──
   window.addEventListener('beforeinstallprompt', function(e){
     e.preventDefault();
     _deferredPrompt = e;
-    setTimeout(()=>{ banner.classList.add('show'); }, 3000);
+    setTimeout(function(){ banner.classList.add('show'); }, 2000);
   });
 
-  // iOS Safari: mostra instruções manuais
+  // ── 4. Fallback Android: se o evento não disparou em 4s, mostra instruções manuais ──
+  if(isAndroid){
+    setTimeout(function(){
+      if(!_deferredPrompt && !banner.classList.contains('show')){
+        // Evento não disparou — app já instalado, ou Chrome não suporta nesta versão
+        // Mostra instruções manuais via menu do Chrome
+        var sub = document.getElementById('pwa-banner-sub');
+        if(sub) sub.textContent = 'Toque em ⋮ (menu) → "Adicionar à tela inicial"';
+        btnInstall.textContent = 'Entendido';
+        btnInstall.onclick = function(){ window.pwaDismiss(); };
+        banner.classList.add('show');
+      }
+    }, 4000);
+  }
+
+  // ── 5. iOS Safari: instruções manuais ──
   if(isIOS){
-    const isSafari = /safari/i.test(navigator.userAgent) && !/crios|fxios|opios/i.test(navigator.userAgent);
+    var isSafari = /safari/i.test(navigator.userAgent) && !/crios|fxios|opios/i.test(navigator.userAgent);
     if(isSafari){
       iosSteps.style.display = 'block';
       btnInstall.textContent = 'Como instalar?';
       btnInstall.onclick = function(){ iosSteps.scrollIntoView({behavior:'smooth'}); };
-      setTimeout(()=>{ banner.classList.add('show'); }, 3000);
+      setTimeout(function(){ banner.classList.add('show'); }, 2000);
     }
   }
 
+  // ── 6. Ação do botão Instalar (Android com prompt nativo) ──
   window.pwaTriggerInstall = function(){
     if(_deferredPrompt){
       _deferredPrompt.prompt();
@@ -1452,6 +1484,7 @@ async function salvarPerfil(){
     }
   };
 
+  // ── 7. Dispensar banner ──
   window.pwaDismiss = function(){
     banner.classList.remove('show');
     sessionStorage.setItem('pwa_dismissed','1');
