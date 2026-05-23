@@ -1501,15 +1501,16 @@ async function salvarPerfil(){
     banner.classList.add('show');
   }
 
-  // Android Chrome — captura beforeinstallprompt (requer HTTPS + SW válido)
+  // Android Chrome — tenta capturar beforeinstallprompt, mas sempre mostra
+  // banner manual após timeout (ícones base64 impedem o evento nativo)
   if(isAndroid){
     window.addEventListener('beforeinstallprompt', function(e){
       e.preventDefault();
       _deferredPrompt = e;
-      showInstallBanner(); // mostra IMEDIATAMENTE quando o evento chega
+      showInstallBanner();
     });
 
-    // Fallback: se após 4s o evento não chegou, mostra instruções manuais
+    // Sempre mostra instruções após 3s se o evento nativo não chegou
     setTimeout(function(){
       if(!_bannerShown){
         showManualBanner({
@@ -1519,7 +1520,7 @@ async function salvarPerfil(){
                 '3. Confirme tocando em <span>Adicionar</span> ✓'
         });
       }
-    }, 4000);
+    }, 3000);
   }
 
   // iOS Safari → instruções manuais sempre
@@ -1531,6 +1532,19 @@ async function salvarPerfil(){
               '2. Role e toque em <span>"Adicionar à Tela de Início"</span><br>' +
               '3. Toque em <span>Adicionar</span> ✓'
       });
+    }, 2000);
+  }
+
+  // Outros (desktop ou navegador desconhecido) — mostra instrução genérica
+  if(!isAndroid && !isIOS){
+    setTimeout(function(){
+      if(!_bannerShown){
+        showManualBanner({
+          subtitle: 'Acesse pelo celular para instalar o app',
+          html: 'No Chrome Android: <span>⋮ menu → Adicionar à tela inicial</span><br>' +
+                'No Safari iOS: <span>Compartilhar → Adicionar à Tela de Início</span>'
+        });
+      }
     }, 3000);
   }
 
