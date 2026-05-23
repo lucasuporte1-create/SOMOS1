@@ -1109,6 +1109,9 @@ async function entrar(){
 
   const sb = initSupabase();
 
+  // Remove hífen para bater com o formato salvo no banco (SM0001 e não SM-0001)
+  const rawDB = raw.replace(/-/g, '');
+
   // ── Autenticação na tabela "participantes" ─────────────────────────────────
   if(sb){
     try {
@@ -1116,7 +1119,7 @@ async function entrar(){
       const { data: rows, error } = await sb
         .from('participantes')
         .select('login,senha')
-        .eq('login', raw);
+        .eq('login', rawDB);
 
       if(error) throw error;
 
