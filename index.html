@@ -1363,7 +1363,6 @@ function aplicarFoto(base64){
 function abrirFotoModal(){
   const userKey=gl();
   const init=(document.getElementById('p-uname').textContent||'?')[0];
-  document.getElementById('photo-prev-init').textContent=init;
   const fotoSalva=localStorage.getItem('s1_photo_'+(userKey||''));
   if(fotoSalva){
     document.getElementById('photo-preview').innerHTML='<img src="'+fotoSalva+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
@@ -1372,6 +1371,9 @@ function abrirFotoModal(){
     document.getElementById('photo-preview').innerHTML='<span id="photo-prev-init">'+init+'</span>';
     document.getElementById('btn-remover-foto').style.display='none';
   }
+  // Atualiza inicial só se o span existir (sem foto carregada)
+  const initEl=document.getElementById('photo-prev-init');
+  if(initEl) initEl.textContent=init;
   document.getElementById('photo-modal').classList.add('show');
 }
 function fecharFotoModal(){ document.getElementById('photo-modal').classList.remove('show'); }
