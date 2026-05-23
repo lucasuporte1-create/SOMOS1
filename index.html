@@ -358,7 +358,7 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
     <div class="photo-modal-title">FOTO DE PERFIL</div>
     <div class="photo-modal-preview" id="photo-preview"><span id="photo-prev-init">?</span></div>
     <div style="font-size:11px;color:rgba(200,233,0,0.45);text-align:center;line-height:1.5;">
-      Sua foto fica salva no dispositivo.<br>Futuramente será sincronizada na nuvem.
+      Sua foto fica salva neste dispositivo.
     </div>
     <button class="photo-btn primary" onclick="document.getElementById('file-input').click()">📷 ESCOLHER FOTO</button>
     <button class="photo-btn secondary" onclick="usarCamera()">🤳 TIRAR FOTO</button>
@@ -701,10 +701,13 @@ async function removeSticker(sId){
 async function salvarPerfilDB(pd){
   const sb = initSupabase();
   const u  = gl(); if(!u) return;
-  localStorage.setItem('s1_profile_'+u, JSON.stringify(pd));
-  if(!sb || false) return;
+  // Salva infos no localStorage (sem foto — foto fica em s1_photo_)
+  const pdSemFoto = { nome:pd.nome, idade:pd.idade, igreja:pd.igreja, ministerio:pd.ministerio };
+  localStorage.setItem('s1_profile_'+u, JSON.stringify(pdSemFoto));
+  if(!sb) return;
   try {
-    await sb.from('users').upsert({ code:u, ...pd }, { onConflict:'code' });
+    // Supabase recebe só as infos, sem foto_base64
+    await sb.from('users').upsert({ code:u, ...pdSemFoto }, { onConflict:'code' });
   } catch(e){ console.warn('salvarPerfilDB err:', e); }
 }
 
@@ -712,10 +715,12 @@ async function carregarPerfilDB(){
   const sb = initSupabase();
   const u  = gl(); if(!u) return {};
   const local = JSON.parse(localStorage.getItem('s1_profile_'+u)||'{}');
-  if(!sb || false) return local;
+  if(!sb) return local;
   try {
-    const { data } = await sb.from('users').select('nome,idade,igreja,ministerio,foto_base64').eq('code',u).maybeSingle();
-    if(data){
+    // Busca só infos do Supabase — foto NÃO vem do Supabase, fica só no localStorage
+    const { data } = await sb.from('users').select('nome,idade,igreja,ministerio').eq('code',u).maybeSingle();
+    if(data && (data.nome||data.idade||data.igreja||data.ministerio)){
+      // Atualiza localStorage com dados do Supabase (sem sobrescrever foto)
       localStorage.setItem('s1_profile_'+u, JSON.stringify(data));
       return data;
     }
@@ -1183,8 +1188,9 @@ async function entrarAlbum(userKey, label){
   if(pd.igreja)document.getElementById('p-igreja').value = pd.igreja;
   if(pd.ministerio) document.getElementById('p-min').value = pd.ministerio;
 
+  // Foto carregada APENAS do localStorage
   const fotoKey = 's1_photo_'+userKey;
-  const fotoSalva = pd.foto_base64 || localStorage.getItem(fotoKey);
+  const fotoSalva = localStorage.getItem(fotoKey);
   if(fotoSalva) aplicarFoto(fotoSalva);
 
   const adminTab = document.getElementById('tab-admin');
