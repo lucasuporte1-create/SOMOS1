@@ -311,7 +311,7 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
         </div>
         <div class="form-title">Minhas Informações</div>
         <div class="profile-card">
-          <div class="pfield"><label>Nome Completo</label><input id="p-nome" type="text" placeholder="Seu nome"/></div>
+          <div class="pfield"><label>Nome Completo</label><input id="p-nome" type="text" placeholder="Seu nome" oninput="if(this.value.trim()){document.getElementById('p-uname').textContent=this.value.trim().toUpperCase();setAvatarTexto(this.value.trim()[0].toUpperCase());}"/></div>
           <div class="pfield"><label>Idade</label><input id="p-idade" type="number" placeholder="Ex: 18" min="12" max="35"/></div>
           <div class="pfield"><label>Igreja</label><input id="p-igreja" type="text" placeholder="Nome da sua igreja"/></div>
           <div class="pfield"><label>Ministério</label>
