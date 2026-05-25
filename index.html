@@ -561,7 +561,7 @@ create policy "public_all" on trades          for all using (true) with check (t
 /* ═══════════════════════════════════════════════════════════════
    CONSTANTES DO APP
 ═══════════════════════════════════════════════════════════════ */
-const TOTAL_STANDS   = 35, TOTAL_STICKERS = 35;
+const TOTAL_STANDS   = 26, TOTAL_STICKERS = 35;
 const MASTER_CODE    = 'SM-3000';
 
 function gerarCodigosAtivacao(){
@@ -593,7 +593,7 @@ const POOL = [
 ];
 
 const CODES = {};
-for(let i=1;i<=35;i++) CODES['STAND'+String(i).padStart(2,'0')]=i;
+for(let i=1;i<=26;i++) CODES['STAND'+String(i).padStart(2,'0')]=i;
 CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODES['TESTE05']=5;
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1234,7 +1234,7 @@ async function resgatarCodigo(){
   if(_cache.stands.includes(num)){ msg.className='code-msg erro'; msg.textContent='Você já visitou este stand!'; return; }
 
   msg.className='code-msg'; msg.textContent='Salvando...';
-  const novas = sortear(3);
+  const novas = sortearPacote(num);
   await addStand(num);
   for(const s of novas) await addSticker(s.id);
 
@@ -1244,15 +1244,28 @@ async function resgatarCodigo(){
   renderStands(); renderStickers(); updateStats(); mostrarPacote(novas);
 }
 
-function sortear(qty){
-  const res=[];
-  for(let i=0;i<qty;i++){
-    const r=Math.random(); let c;
-    if(r<0.10) c=POOL.filter(s=>s.r==='L');
-    else if(r<0.35) c=POOL.filter(s=>s.r==='R');
-    else c=POOL.filter(s=>s.r==='N');
-    if(!c.length) c=POOL;
-    res.push(c[Math.floor(Math.random()*c.length)]);
+// Stands que têm pacote especial (3 normais + 1 rara + 1 lendária)
+// Os demais recebem pacote padrão (4 normais + 1 rara)
+const STANDS_LENDARIOS = [5, 10, 15, 20, 26]; // stands especiais com lendária
+
+function sortearUma(raridade){
+  const pool = POOL.filter(s=>s.r===raridade);
+  if(!pool.length) return POOL[Math.floor(Math.random()*POOL.length)];
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function sortearPacote(standNum){
+  const temLendaria = STANDS_LENDARIOS.includes(standNum);
+  const res = [];
+  if(temLendaria){
+    // Pacote especial: 3 normais + 1 rara + 1 lendária
+    for(let i=0;i<3;i++) res.push(sortearUma('N'));
+    res.push(sortearUma('R'));
+    res.push(sortearUma('L'));
+  } else {
+    // Pacote padrão: 4 normais + 1 rara
+    for(let i=0;i<4;i++) res.push(sortearUma('N'));
+    res.push(sortearUma('R'));
   }
   return res;
 }
