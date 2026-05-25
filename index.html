@@ -1299,10 +1299,18 @@ function mostrarPacote(stickers){
     const d=document.createElement('div');
     d.className='pack-card'+(s.r==='U'?' ultimate':'');
     const rl=s.r==='U'?'✨ ULTIMATE':s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
-    const iconHtml = s.img
-      ? '<img src="'+BUD_WRIGHT_IMG+'" style="width:72px;height:88px;object-fit:cover;border-radius:8px;border:2px solid #ffd700;display:block;margin:0 auto 2px;" />'
-      : '<div class="pack-card-icon">'+s.icon+'</div>';
-    d.innerHTML=iconHtml+'<div class="pack-card-name">'+s.nome+'</div><div class="pack-card-rarity r'+s.r+'">'+rl+'</div>';
+    if(s.img){
+      d.style.padding='0';
+      d.style.overflow='hidden';
+      d.style.position='relative';
+      d.innerHTML='<img src="'+BUD_WRIGHT_IMG+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;" />'
+        +'<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.82));border-radius:0 0 12px 12px;padding:6px 4px 5px;text-align:center;">'
+        +'<div style="font-size:8px;font-weight:700;color:#fff8c0;text-transform:uppercase;letter-spacing:0.5px;">'+s.nome+'</div>'
+        +'<div class="pack-card-rarity r'+s.r+'" style="margin:2px auto 0;display:inline-block;">'+rl+'</div>'
+        +'</div>';
+    } else {
+      d.innerHTML='<div class="pack-card-icon">'+s.icon+'</div><div class="pack-card-name">'+s.nome+'</div><div class="pack-card-rarity r'+s.r+'">'+rl+'</div>';
+    }
     c.appendChild(d);
 
     const isRare = s.r==='R' || s.r==='L';
@@ -1340,7 +1348,10 @@ function renderStickers(){
     if(has){
       const rl=s.r==='U'?'✨ ULTIMATE':s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
       const badge=qty>1?'<span class="qty-badge">'+qty+'x</span>':'';
-      d.innerHTML=badge+'<span class="rbadge r'+s.r+'">'+rl+'</span><div class="slot-icon">'+s.icon+'</div><div class="slot-name">'+s.nome+'</div>';
+      const slotIcon = s.img
+        ? '<img src="'+BUD_WRIGHT_IMG+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:11px;opacity:0.92;" />'
+        : '<div class="slot-icon">'+s.icon+'</div>';
+      d.innerHTML=badge+'<span class="rbadge r'+s.r+'">'+rl+'</span>'+slotIcon+(s.img?'':'<div class="slot-name">'+s.nome+'</div>');
       d.onclick=()=>abrirSAction(s.id);
     } else {
       d.innerHTML='<div class="slot-num">'+s.id+'</div>';
