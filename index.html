@@ -101,6 +101,8 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .rN{background:rgba(255,255,255,0.13);color:rgba(255,255,255,0.55);}
 .rR{background:rgba(100,180,255,0.22);color:#7bc5ff;}
 .rL{background:rgba(255,200,0,0.22);color:#ffd700;}
+.rU{background:linear-gradient(90deg,rgba(255,180,0,0.5),rgba(255,220,80,0.7));color:#fff8c0;border:1px solid #ffd700;text-shadow:0 0 6px #ffd700;animation:shimmerU 1.5s infinite alternate;}
+@keyframes shimmerU{from{box-shadow:0 0 6px #ffd700;}to{box-shadow:0 0 16px #ffe066,0 0 30px #ffd700;}}
 
 /* PERFIL */
 .profile-card{background:rgba(0,0,0,0.5);border:1px solid rgba(200,233,0,0.2);border-radius:20px;padding:18px;backdrop-filter:blur(12px);margin-bottom:14px;}
@@ -591,11 +593,12 @@ const POOL = [
   {id:31,nome:'Verbo Vivo',icon:'📜',r:'L'},{id:32,nome:'Shalom',icon:'🌙',r:'L'},
   {id:33,nome:'Hosana',icon:'🎺',r:'L'},{id:34,nome:'Maranata',icon:'⭐',r:'L'},
   {id:35,nome:'Somos Recife',icon:'🌊',r:'L'},
+  {id:36,nome:'PR Bud Wright',icon:'👑',r:'U'},
 ];
 
 const CODES = {};
 for(let i=1;i<=26;i++) CODES['STAND'+String(i).padStart(2,'0')]=i;
-CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODES['TESTE05']=5;
+CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODES['TESTE05']=5;CODES['TESTE06']=6;
 
 /* ═══════════════════════════════════════════════════════════════
    SUPABASE CLIENT + ESTADO LOCAL (cache)
@@ -1247,7 +1250,9 @@ async function resgatarCodigo(){
 
 // Stands que têm pacote especial (3 normais + 1 rara + 1 lendária)
 // Os demais recebem pacote padrão (4 normais + 1 rara)
+// Stand 6 (TESTE06) = pacote ULTIMATE: 3 normais + 1 rara + 1 lendária + PR Bud Wright
 const STANDS_LENDARIOS = [5, 10, 15, 20, 26]; // stands especiais com lendária
+const STAND_ULTIMATE = 6; // stand exclusivo com carta Ultimate
 
 function sortearUma(raridade){
   const pool = POOL.filter(s=>s.r===raridade);
@@ -1257,8 +1262,15 @@ function sortearUma(raridade){
 
 function sortearPacote(standNum){
   const temLendaria = STANDS_LENDARIOS.includes(standNum);
+  const temUltimate = standNum === STAND_ULTIMATE;
   const res = [];
-  if(temLendaria){
+  if(temUltimate){
+    // Pacote Ultimate: 3 normais + 1 rara + 1 lendária + PR Bud Wright (Ultimate)
+    for(let i=0;i<3;i++) res.push(sortearUma('N'));
+    res.push(sortearUma('R'));
+    res.push(sortearUma('L'));
+    res.push(POOL.find(s=>s.id===36)); // PR Bud Wright — carta Ultimate garantida
+  } else if(temLendaria){
     // Pacote especial: 3 normais + 1 rara + 1 lendária
     for(let i=0;i<3;i++) res.push(sortearUma('N'));
     res.push(sortearUma('R'));
@@ -1283,7 +1295,7 @@ function mostrarPacote(stickers){
   stickers.forEach((s,i)=>{
     const d=document.createElement('div');
     d.className='pack-card';
-    const rl=s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+    const rl=s.r==='U'?'✨ ULTIMATE':s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
     d.innerHTML='<div class="pack-card-icon">'+s.icon+'</div><div class="pack-card-name">'+s.nome+'</div><div class="pack-card-rarity r'+s.r+'">'+rl+'</div>';
     c.appendChild(d);
 
@@ -1320,7 +1332,7 @@ function renderStickers(){
     const d=document.createElement('div');
     d.className='slot'+(has?' got':'');
     if(has){
-      const rl=s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
+      const rl=s.r==='U'?'✨ ULTIMATE':s.r==='L'?'Lendária':s.r==='R'?'Rara':'Normal';
       const badge=qty>1?'<span class="qty-badge">'+qty+'x</span>':'';
       d.innerHTML=badge+'<span class="rbadge r'+s.r+'">'+rl+'</span><div class="slot-icon">'+s.icon+'</div><div class="slot-name">'+s.nome+'</div>';
       d.onclick=()=>abrirSAction(s.id);
