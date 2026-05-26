@@ -165,9 +165,9 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 /* ── STICKER DETAIL MODAL ── */
 .sdetail-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.95);z-index:210;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:0;opacity:0;pointer-events:none;transition:opacity 0.25s;}
 .sdetail-overlay.show{opacity:1;pointer-events:all;}
-.sdetail-box{background:transparent;border:none;border-radius:0;padding:0;width:100%;height:100%;text-align:center;display:flex;flex-direction:column;animation:popIn 0.3s ease both;}
+.sdetail-box{background:transparent;border:none;border-radius:0;padding:0;width:100%;flex:1;text-align:center;display:flex;flex-direction:column;animation:popIn 0.3s ease both;overflow:hidden;}
 @keyframes popIn{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
-.sdetail-icon{font-size:56px;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.sdetail-icon{font-size:56px;flex:1;min-height:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden;}
 .sdetail-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#fff;margin-bottom:4px;padding:0 16px;}
 .sdetail-rarity{font-size:12px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:8px;display:inline-block;margin-bottom:10px;}
 .sdetail-qty-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
