@@ -163,18 +163,18 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .saction-info-line{font-size:10px;color:rgba(255,255,255,0.45);text-align:center;margin-top:8px;letter-spacing:0.5px;}
 
 /* ── STICKER DETAIL MODAL ── */
-.sdetail-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.95);z-index:210;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:0;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.sdetail-overlay{position:absolute;inset:0;background:#000;z-index:210;opacity:0;pointer-events:none;transition:opacity 0.25s;}
 .sdetail-overlay.show{opacity:1;pointer-events:all;}
-.sdetail-box{background:transparent;border:none;border-radius:0;padding:0;width:100%;flex:1;text-align:center;display:flex;flex-direction:column;animation:popIn 0.3s ease both;overflow:hidden;}
+.sdetail-box{position:absolute;inset:0;background:transparent;border:none;border-radius:0;padding:0;display:flex;flex-direction:column;}
 @keyframes popIn{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
-.sdetail-icon{font-size:56px;flex:1;min-height:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden;}
-.sdetail-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#fff;margin-bottom:4px;padding:0 16px;}
-.sdetail-rarity{font-size:12px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:8px;display:inline-block;margin-bottom:10px;}
-.sdetail-qty-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
+.sdetail-icon{font-size:56px;position:absolute;top:0;left:0;right:0;bottom:30%;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.sdetail-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fff;margin-bottom:4px;}
+.sdetail-rarity{font-size:11px;font-weight:700;letter-spacing:2px;padding:3px 12px;border-radius:8px;display:inline-block;margin-bottom:8px;}
+.sdetail-qty-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;}
 .sdetail-qty-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;}
 .sdetail-qty-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;}
-.sdetail-dup{font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:12px;}
-.sdetail-close{width:calc(100% - 32px);margin:0 16px 24px;padding:15px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#fff;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;}
+.sdetail-dup{font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:10px;}
+.sdetail-close{width:calc(100% - 32px);margin:0 16px 16px;padding:13px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#fff;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;}.sdetail-info{position:absolute;bottom:0;left:0;right:0;height:30%;background:rgba(15,15,15,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 0;border-radius:20px 20px 0 0;}
 
 /* ── TRADE / QR OVERLAY ── */
 .trade-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.96);z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
@@ -428,14 +428,16 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
   <div class="sdetail-overlay" id="sdetail-overlay">
     <div class="sdetail-box">
       <div class="sdetail-icon" id="sdetail-icon">🌟</div>
-      <div class="sdetail-name" id="sdetail-name">Figurinha</div>
-      <div class="sdetail-rarity" id="sdetail-rarity-badge"></div>
-      <div class="sdetail-qty-row">
-        <div class="sdetail-qty-label">QUANTIDADE</div>
-        <div class="sdetail-qty-num" id="sdetail-qty">1</div>
+      <div class="sdetail-info">
+        <div class="sdetail-name" id="sdetail-name">Figurinha</div>
+        <div class="sdetail-rarity" id="sdetail-rarity-badge"></div>
+        <div class="sdetail-qty-row">
+          <div class="sdetail-qty-label">QUANTIDADE</div>
+          <div class="sdetail-qty-num" id="sdetail-qty">1</div>
+        </div>
+        <div class="sdetail-dup" id="sdetail-dup"></div>
+        <button class="sdetail-close" onclick="fecharSDetail()">FECHAR</button>
       </div>
-      <div class="sdetail-dup" id="sdetail-dup"></div>
-      <button class="sdetail-close" onclick="fecharSDetail()">FECHAR</button>
     </div>
   </div>
 
