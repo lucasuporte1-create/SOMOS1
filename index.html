@@ -955,7 +955,16 @@ function verFigurinha(){
   const corBg = s.r==='L'?'background:rgba(255,200,0,0.18);color:#ffd700'
                :s.r==='R'?'background:rgba(100,180,255,0.18);color:#7bc5ff'
                :'background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6)';
-  if(s.img){var di=document.getElementById('sdetail-icon');di.innerHTML='<img src="'+s.img+'" style="width:60px;height:60px;border-radius:10px;object-fit:cover;">';di.style.fontSize='0';}else{document.getElementById('sdetail-icon').textContent=s.icon;}
+  if(s.img){
+    var di=document.getElementById('sdetail-icon');
+    var src=s.img===true?BUD_WRIGHT_IMG:s.img;
+    di.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;display:block;">';
+    di.style.cssText='position:absolute;top:0;left:0;right:0;bottom:30%;overflow:hidden;font-size:0;';
+  }else{
+    var di=document.getElementById('sdetail-icon');
+    di.textContent=s.icon;
+    di.style.cssText='position:absolute;top:0;left:0;right:0;bottom:30%;display:flex;align-items:center;justify-content:center;font-size:80px;';
+  }
   document.getElementById('sdetail-name').textContent         = s.label||s.nome;
   document.getElementById('sdetail-rarity-badge').textContent = rl;
   document.getElementById('sdetail-rarity-badge').style.cssText = corBg+';letter-spacing:2px;font-size:11px;font-weight:700;padding:4px 14px;border-radius:8px;display:inline-block;margin-bottom:16px;';
