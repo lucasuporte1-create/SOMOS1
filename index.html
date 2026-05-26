@@ -1776,45 +1776,31 @@ async function salvarPerfil(){
 })();
 
 document.addEventListener("click", async function(event) {
+        // Verifica se o elemento clicado (ou o pai dele) tem a classe do botão do Google
         const botaoGoogle = event.target.closest(".g-sign-in-button");
         
         if (botaoGoogle) {
             event.preventDefault();
-            console.log("-> Clique detectado no botão do Google!");
+            console.log("Clique detectado globalmente! Iniciando autenticação com o Google...");
             
-            // TESTE 1: A biblioteca da CDN carregou?
-            if (typeof window.supabase === 'undefined') {
-                alert("Erro: A biblioteca do Supabase (CDN) não foi carregada no HTML. Verifique a tag <script> do topo.");
-                return;
-            }
-
-            // TESTE 2: O cliente foi inicializado?
-            if (typeof supabaseClient === 'undefined' || !supabaseClient) {
-                alert("Erro: A variável 'supabaseClient' está indefinida ou nula neste momento.");
+            // Proteção caso o Supabase não tenha iniciado
+            if (!supabaseClient) {
+                console.error("Erro: O cliente do Supabase não foi inicializado.");
+                alert("Erro interno: O servidor de autenticação não respondeu.");
                 return;
             }
 
             try {
-                console.log("-> Chamando supabaseClient.auth.signInWithOAuth...");
-                
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
                         redirectTo: window.location.origin + window.location.pathname
                     }
                 });
-                
                 if (error) throw error;
-                
-                // Se o Supabase responder com uma URL de redirecionamento, força o navegador a ir para ela
-                if (data && data.url) {
-                    console.log("-> Redirecionando para:", data.url);
-                    window.location.href = data.url;
-                }
-                
             } catch (error) {
-                console.error('Erro detalhado ao autenticar:', error);
-                alert('Erro na autenticação: ' + error.message);
+                console.error('Erro ao autenticar com Google:', error.message);
+                alert('Erro ao autenticar com Google: ' + error.message);
             }
         }
     });
