@@ -1779,23 +1779,37 @@ async function salvarPerfil(){
 
 
 
-document.addEventListener('keydown', e=>{ if(e.key==='Enter') entrar(); });
-
-async function signInWithGoogle() {
-    try {
-        // Atualizado para supabaseClient
-        const { data, error } = await supabaseClient.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: window.location.origin + window.location.pathname
-            }
-        });
-        if (error) throw error;
-    } catch (error) {
-        console.error('Erro ao autenticar com Google:', error.message);
-        alert('Erro ao autenticar com Google: ' + error.message);
-    }
-}
+document.addEventListener("DOMContentLoaded", function() {
+        // Busca o botão pela classe que ele já tem
+        const botaoGoogle = document.querySelector(".g-sign-in-button");
+        
+        if (botaoGoogle) {
+            console.log("Botão do Google encontrado com sucesso no HTML!");
+            
+            // Força o cursor de clique para você ter certeza que ele é clicável
+            botaoGoogle.style.cursor = "pointer";
+            
+            botaoGoogle.addEventListener("click", async function(e) {
+                e.preventDefault(); // Evita que a página recarregue
+                console.log("Botão do Google clicado! Iniciando autenticação...");
+                
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: window.location.origin + window.location.pathname
+                        }
+                    });
+                    if (error) throw error;
+                } catch (error) {
+                    console.error('Erro ao autenticar com Google:', error.message);
+                    alert('Erro ao autenticar com Google: ' + error.message);
+                }
+            });
+        } else {
+            console.error("Aviso: O JavaScript não encontrou nenhum elemento com a classe '.g-sign-in-button' na página.");
+        }
+    });
 </script>
 
 </body>
