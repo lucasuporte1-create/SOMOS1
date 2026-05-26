@@ -291,7 +291,7 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
       <button class="btn-login" onclick="entrar()">ENTRAR NO EVENTO</button>
       <div class="msg" id="login-msg"></div>
       <div class="login-divider">OU</div>
-      <button class="btn-google" id="btn-google-auth" onclick="loginGoogle()">
+      <button class="btn-google" id="btn-google-auth">
   <svg width="18" height="18" viewBox="0 0 48 48">...</svg>
   Entrar com Google
 </button>
@@ -657,9 +657,11 @@ let _realtimeChannel = null;
 function initSupabase(){
   if(_sb) return _sb;
   try {
-    var supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    verificarSessaoGoogle();
-    if(!_sb) console.warn('Supabase SDK não carregado — modo offline (localStorage)');
+    if(!window.supabase){
+      console.warn('Supabase SDK não carregado — modo offline (localStorage)');
+      return null;
+    }
+    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     return _sb;
   } catch(e){
     console.warn('Supabase não iniciado — modo offline (localStorage):', e);
@@ -1132,12 +1134,42 @@ function formatarCodigo(input){
    SPLASH → LOGIN
 ───────────────────────────────────────────── */
 window.onload = function(){
-  localStorage.removeItem('s1_logado');
   _userCode = null;
+
+  // Se acabou de voltar do redirect OAuth do Google, processa a sessão
+  // em vez de mostrar a tela de login novamente.
+  const oauthPending = localStorage.getItem('s1_oauth_pending') === '1';
+  if(oauthPending){
+    let tentativasOAuth = 0;
+    function aguardarSDKOAuth(){
+      if(window.supabase || tentativasOAuth > 50){
+        const sb = initSupabase();
+        if(sb){
+          // Conclui o login com os dados da sessão retornada pelo Google
+          verificarSessaoGoogle().catch(e => {
+            console.error('Erro ao verificar sessão Google:', e);
+            localStorage.removeItem('s1_oauth_pending');
+            iniciarApp();
+          });
+        } else {
+          // SDK não carregou: limpa flag e segue para o login normal
+          localStorage.removeItem('s1_oauth_pending');
+          iniciarApp();
+        }
+      } else {
+        tentativasOAuth++;
+        setTimeout(aguardarSDKOAuth, 100);
+      }
+    }
+    aguardarSDKOAuth();
+    return;
+  }
+
   // Aguarda até 3s pelo Supabase SDK, depois inicia normalmente
   var tentativas = 0;
   function aguardarSDK(){
     if(window.supabase || tentativas > 30){
+      initSupabase();
       iniciarApp();
     } else {
       tentativas++;
@@ -1257,13 +1289,37 @@ async function entrar(){
 
 // Verificar se voltou do redirect do Google
 async function verificarSessaoGoogle(){
-  if(!_sb) return;
-  const { data: { session } } = await _sb.auth.getSession();
-  if(!session) return;
+  const sb = initSupabase();
+  if(!sb){
+    localStorage.removeItem('s1_oauth_pending');
+    iniciarApp();
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    // Não há sessão ativa: limpa a flag e segue para o login normal
+    localStorage.removeItem('s1_oauth_pending');
+    iniciarApp();
+    return;
+  }
+  // Login concluído com sucesso: limpa a flag para não reprocessar
+  localStorage.removeItem('s1_oauth_pending');
+
   const email = session.user.email;
   const nome  = session.user.user_metadata?.full_name || email.split('@')[0];
   // Usa o email como código de usuário
   const userKey = email.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20);
+  _userCode = userKey;
+  localStorage.setItem('s1_logado', userKey);
+
+  // Garante que o usuário exista na tabela users
+  try { await sb.from('users').upsert({ code:userKey }, { onConflict:'code', ignoreDuplicates:true }); } catch(e){}
+
+  // Esconde o splash, caso ainda esteja visível
+  const sp = document.getElementById('s-splash');
+  if(sp){ sp.classList.remove('active'); sp.style.display='none'; }
+
+  await gs();           // carrega o estado do usuário
   await entrarAlbum(userKey, nome);
 }
 
@@ -1775,12 +1831,28 @@ async function salvarPerfil(){
     .catch(function(err){ console.warn('[SW]:', err.message); });
 })();
 
+// Exibe mensagem na tela de login
+function setMsg(texto, tipo){
+  const msg = document.getElementById('login-msg');
+  if(!msg) return;
+  msg.className = 'msg ' + (tipo === 'ok' ? 'ok' : 'erro');
+  msg.textContent = texto;
+}
+
 document.getElementById('btn-google-auth').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-google-auth');
   try {
+    const sb = initSupabase();
+    if(!sb){
+      setMsg('Serviço indisponível. Verifique sua internet e tente novamente.');
+      return;
+    }
+
+    btn.classList.add('loading');
     localStorage.setItem('s1_oauth_pending', '1');
 
     const redirectTo = window.location.origin + window.location.pathname;
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo
@@ -1789,20 +1861,16 @@ document.getElementById('btn-google-auth').addEventListener('click', async () =>
 
     if (error) {
       localStorage.removeItem('s1_oauth_pending');
+      btn.classList.remove('loading');
       throw error;
     }
+    // Se não houve erro, o navegador será redirecionado ao Google.
   } catch (e) {
     localStorage.removeItem('s1_oauth_pending');
+    btn.classList.remove('loading');
     console.error('Erro no OAuth Google:', e);
-    const btn = document.getElementById('btn-google-auth');
-    if (btn) {
-      btn.classList.remove('loading');
-    }
     setMsg('Erro ao iniciar login Google.');
   }
-
-
-  if (error) console.error('Erro no login:', error);
 });
 </script>
 
