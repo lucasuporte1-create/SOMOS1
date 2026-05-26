@@ -46,8 +46,14 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
 .field input{width:100%;background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:11px 14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:#111;outline:none;transition:border-color 0.2s,background 0.2s;-webkit-appearance:none;text-transform:uppercase;text-align:center;}
 .field input:focus{border-color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.35);}
 .field input::placeholder{color:rgba(0,0,0,0.35);font-size:13px;letter-spacing:2px;}
-.btn-login{width:100%;margin-top:8px;padding:13px;background:rgba(0,0,0,0.7);color:#fff;border:1px solid rgba(0,0,0,0.3);border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;transition:opacity 0.15s,transform 0.1s;-webkit-tap-highlight-color:transparent;}
+.btn-login{width:100%;margin-top:8px;padding:13px;background:rgba(0,0,0,0.7);color:#fff;border:1px solid rgba(0,0,0,0.3);border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;transition:opacity 0.15s,transform 0.1s,background 0.2s,box-shadow 0.2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
 .btn-login:active{opacity:0.82;transform:scale(0.97);}
+.btn-login.loading{pointer-events:none;color:transparent;}
+.btn-login.loading::after{content:'';position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:btnSpin 0.7s linear infinite;}
+.btn-login.success{background:rgba(50,200,100,0.85);border-color:rgba(50,200,100,0.5);box-shadow:0 0 18px rgba(80,220,120,0.45);}
+.btn-login.error{animation:btnShake 0.4s ease both;background:rgba(200,50,50,0.7);border-color:rgba(255,80,80,0.4);}
+@keyframes btnSpin{to{transform:rotate(360deg);}}
+@keyframes btnShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(4px);}}
 .msg{font-size:11px;text-align:center;margin-top:8px;min-height:14px;color:rgba(0,0,0,0.65);}
 .msg.erro{color:#ff6b6b;}.msg.ok{color:#000;}
 .forgot{font-size:10px;color:rgba(0,0,0,0.45);text-align:center;margin-top:10px;cursor:pointer;}
@@ -1138,11 +1144,23 @@ async function entrar(){
   const raw   = document.getElementById('act-code').value.trim().toUpperCase();
   const senha = document.getElementById('act-senha').value.trim();
   const msg   = document.getElementById('login-msg');
+  const btn   = document.querySelector('.btn-login');
 
-  if(!raw){   msg.className='msg erro'; msg.textContent='Digite seu código. Ex: SM-0001'; return; }
-  if(!senha){ msg.className='msg erro'; msg.textContent='Digite sua senha.'; return; }
+  if(!raw){
+    msg.className='msg erro'; msg.textContent='Digite seu código. Ex: SM-0001';
+    btn.classList.remove('success','loading'); btn.classList.add('error');
+    setTimeout(()=>btn.classList.remove('error'),500);
+    return;
+  }
+  if(!senha){
+    msg.className='msg erro'; msg.textContent='Digite sua senha.';
+    btn.classList.remove('success','loading'); btn.classList.add('error');
+    setTimeout(()=>btn.classList.remove('error'),500);
+    return;
+  }
 
   msg.className='msg'; msg.textContent='Verificando...';
+  btn.classList.remove('success','error'); btn.classList.add('loading');
 
   const sb = initSupabase();
 
@@ -1169,17 +1187,23 @@ async function entrar(){
       if(!encontrado){
         msg.className='msg erro';
         msg.textContent='Código ou senha incorretos.';
+        btn.classList.remove('loading'); btn.classList.add('error');
+        setTimeout(()=>btn.classList.remove('error'),500);
         return;
       }
     } catch(e){
       console.warn('Erro ao consultar Supabase:', e);
       msg.className='msg erro';
       msg.textContent='Sem conexão com o servidor. Verifique sua internet.';
+      btn.classList.remove('loading'); btn.classList.add('error');
+      setTimeout(()=>btn.classList.remove('error'),500);
       return;
     }
   } else {
     msg.className='msg erro';
     msg.textContent='Serviço indisponível. Tente novamente.';
+    btn.classList.remove('loading'); btn.classList.add('error');
+    setTimeout(()=>btn.classList.remove('error'),500);
     return;
   }
 
@@ -1195,6 +1219,7 @@ async function entrar(){
   }
 
   const label = isMaster ? 'Organizador' : 'Jovem ' + raw;
+  btn.classList.remove('loading'); btn.classList.add('success');
   msg.className='msg ok'; msg.textContent='✓ Bem-vindo!';
 
   msg.textContent='Carregando dados...';
@@ -1202,8 +1227,8 @@ async function entrar(){
 
   setTimeout(()=>{
     document.getElementById('s-login').classList.remove('active');
-    setTimeout(()=>entrarAlbum(raw, label), 100);
-  }, 600);
+    setTimeout(()=>{ btn.classList.remove('success'); entrarAlbum(raw, label); }, 100);
+  }, 700);
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Enter') entrar(); });
 
