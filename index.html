@@ -1384,7 +1384,7 @@ async function entrarAlbum(userKey, label){
 }
 
 function goTab(name){
-  const names=['stands','album','perfil','admin'];
+  const names=['album','stands','perfil','admin'];
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',names[i]===name));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   const panel=document.getElementById('panel-'+name);
