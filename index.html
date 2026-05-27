@@ -782,7 +782,7 @@ const BUD_WRIGHT_IMG = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDA
 const CODES = {};
 for(let i=1;i<=26;i++) CODES['STAND'+String(i).padStart(2,'0')]=i;
 CODES['TESTE01']=1;CODES['TESTE02']=2;CODES['TESTE03']=3;CODES['TESTE04']=4;CODES['TESTE05']=5;CODES['TESTE06']=6;
-CODES['TESTE07']=7;
+CODES['TESTE07']=7;CODES['TESTE08']=8;
 
 /* ═══════════════════════════════════════════════════════════════
    SUPABASE CLIENT + ESTADO LOCAL (cache)
@@ -1535,6 +1535,7 @@ async function resgatarCodigo(){
 const STANDS_LENDARIOS = [5, 10, 15, 20, 26]; // stands especiais com lendária
 const STAND_ULTIMATE = 6; // stand exclusivo com carta Ultimate
 const STAND_FOTOS = 7; // stand com as novas cartas com foto (ids 6-13)
+const STAND_DIRETORIA = 8; // stand exclusivo com todas as figurinhas da Diretoria (ids 85-95)
 
 function sortearUma(raridade){
   const pool = POOL.filter(s=>s.r===raridade);
@@ -1546,8 +1547,12 @@ function sortearPacote(standNum){
   const temLendaria = STANDS_LENDARIOS.includes(standNum);
   const temUltimate = standNum === STAND_ULTIMATE;
   const temFotos = standNum === STAND_FOTOS;
+  const temDiretoria = standNum === STAND_DIRETORIA;
   const res = [];
-  if(temFotos){
+  if(temDiretoria){
+    // Pacote Diretoria: todos os 11 membros da Diretoria (ids 85-95)
+    [85,86,87,88,89,90,91,92,93,94,95].forEach(id => res.push(POOL.find(s=>s.id===id)));
+  } else if(temFotos){
     // Pacote Teste07: todas as 8 novas cartas com foto (ids 6-13)
     [6,7,8,9,10,11,12,13].forEach(id => res.push(POOL.find(s=>s.id===id)));
   } else if(temUltimate){
