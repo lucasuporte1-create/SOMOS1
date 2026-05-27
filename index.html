@@ -342,15 +342,21 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
       <div class="album-avatar" id="av-init" onclick="goTab('perfil')" style="overflow:hidden;position:relative;"></div>
     </div>
     <div class="tabs">
-      <div class="tab on" onclick="goTab('stands')">Stands</div>
-      <div class="tab" onclick="goTab('album')">Álbum</div>
+      <div class="tab on" onclick="goTab('album')">Álbum</div>
+      <div class="tab" onclick="goTab('stands')">Stands</div>
       <div class="tab" onclick="goTab('perfil')">Perfil</div>
       <div class="tab tab-admin" id="tab-admin" style="display:none" onclick="goTab('admin')">Admin</div>
     </div>
     <div class="tab-content">
 
       <!-- STANDS PANEL -->
-      <div class="panel on" id="panel-stands">
+      <!-- ALBUM PANEL -->
+      <div class="panel on" id="panel-album">
+        <div class="section-title">Minhas Figurinhas</div>
+        <div class="stickers-grid" id="stickers-grid"></div>
+      </div>
+
+      <div class="panel" id="panel-stands">
         <div class="stand-card">
           <div class="stand-title">Código do Stand</div>
           <div class="stand-desc">Visite o stand, peça o código ao responsável e ganhe um pacote de figurinhas!</div>
@@ -367,12 +373,6 @@ html,body{width:100%;height:100%;background:#000;display:flex;justify-content:ce
           <div class="stand-title">Stands Visitados</div>
           <div class="stands-grid" id="stands-grid"></div>
         </div>
-      </div>
-
-      <!-- ALBUM PANEL -->
-      <div class="panel" id="panel-album">
-        <div class="section-title">Minhas Figurinhas</div>
-        <div class="stickers-grid" id="stickers-grid"></div>
       </div>
 
       <!-- PERFIL PANEL -->
@@ -1380,7 +1380,7 @@ async function entrarAlbum(userKey, label){
   if(adminTab) adminTab.style.display = (userKey===MASTER_CODE)?'flex':'none';
 
   document.getElementById('s-album').classList.add('active');
-  renderStands(); renderStickers(); updateStats(); goTab('stands');
+  renderStands(); renderStickers(); updateStats(); goTab('album');
 }
 
 function goTab(name){
