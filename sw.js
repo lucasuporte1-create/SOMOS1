@@ -2,7 +2,7 @@
 // Estrategia: network-first para o app (sempre pega a versao nova quando online),
 // limpa caches antigos, assume o controle imediatamente e mantem o PWA instalavel.
 // Para forcar uma atualizacao no futuro, basta mudar o numero da versao abaixo.
-const CACHE = 'somos1-v3';
+const CACHE = 'somos1-v4';
 
 self.addEventListener('install', function (event) {
   // Ativa a versao nova imediatamente, sem esperar a aba antiga fechar
